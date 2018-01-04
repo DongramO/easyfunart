@@ -8,9 +8,36 @@ exports.mainData = async (req, res) => {
   const { query } = req
   try {
     pool = await mysql(dbpool)
-    const topData = await homeList.homeData(pool)
-    const bottomData = await homeList.ThemeData(query, pool)
+    const numSet = [];
+    let cnt = 0;
+    const themeSize = await homeList.themeSize(pool)
+    
+    while(cnt < 3) {
+      let result = Math.floor(Math.random() * themeSize.c) + 1;
+      if(!numSet.includes(result)) {
+        numSet.push(result)
+        cnt++
+      }
+    }
+    topData = await homeList.homeData(pool)
+    bottomData = await homeList.ThemeData(query, numSet, pool)
+    bottomResult = {
+      theme1: [],
+      theme2: [],
+      theme3: []
+    }
+    for(let i =0; i<3; i++) {
+      for(let j=0; j<bottomData.length; j++) {
+        if(bottomData[j].theme_id === numSet[i]) {
+          if(i === 0) bottomResult.theme1.push(bottomData[j])
+          if(i === 1) bottomResult.theme2.push(bottomData[j])
+          if(i === 2) bottomResult.theme3.push(bottomData[j])
+        }
+      }
+    }
+    console.log(bottomResult)
   } catch (e) {
+    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
@@ -25,7 +52,7 @@ exports.mainData = async (req, res) => {
     message: 'success add Preference',
     data: {
       topData,
-      bottomData,
+      bottomResult,
     },
   })
 }
