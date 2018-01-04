@@ -1,11 +1,29 @@
-const mysql = require('mysql')
 
-exports.searchGrade = function searchGrade(ex_id, user_id, review_grade, connection) {
+
+exports.callGradeInfo = function callGradeInfo(exId, userId,connection){
   return new Promise((resolve, reject) => {
-    const Query = 'SELETE * FROM review ex_id = ? AND user_id = ?'
-    connection.query(Query, [ex_id, user_id], (err, result) => {
+    const Query = 'SELECT review_grade FROM REVIEW WHERE ex_id = ? AND user_id = ? '
+    connection.query(Query, [exId, userId], (err, result) => {
       if (err) {
-        connection.release()
+        reject('call grade info ERR')
+      } else {
+        if(result.length===0){
+          resolve("0")
+        }else {
+          resolve(result)
+
+        }
+      }
+    })
+  })
+}
+
+exports.getGrade = function getGrade(exId, userId, connection) {//////////리뷰그레이드삭제////////////////////
+  return new Promise((resolve, reject) => {
+    const Query = 'SELECT * FROM REVIEW WHERE ex_id = ? AND user_id = ?'
+    connection.query(Query, [exId, userId], (err, result) => {
+      if (err) {
+        reject('get grade ERR')
       } else {
         resolve(result)
       }
@@ -13,24 +31,34 @@ exports.searchGrade = function searchGrade(ex_id, user_id, review_grade, connect
   })
 }
 
-exports.insertGrade = function insertGrade(ex_id, user_id, review_grade) {
+exports.insertGrade = function insertGrade(exId, userId, reviewGrade,connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'INSERT review INTO VALUES(?,?,?,?,?,?)'
-    connection.query(Query, [0, null, grade, null, ex_id, user_id], (err, result) => {
+    const Query = 'INSERT INTO REVIEW(review_id,review_grade,ex_id,user_id) VALUES(?,?,?,?)'
+    connection.query(Query, [null,reviewGrade, exId, userId], (err, result) => {
       if (err) {
-        reject(err)
+        reject('insert review grade query error')
       } else {
         resolve(true)
       }
     })
   })
 }
-
-
-exports.updateGrade = function updateGrade(bodyString) {
+exports.getGradeCount = function (userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'UPDATE review SET review_grade = ? WHERE ex_id = ? AND user_id = ?'
-    connection.query(Query, [review_grade, ex_id, user_id], (err, result) => {
+    const Query = 'SELECT count(ex_id) AS countGrade FROM REVIEW WHERE user_id = ? '
+    connection.query(Query, userId, (err, result) => {
+      if (err) {
+        reject('select Grade count fail')
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
+exports.modifyGrade = function modifyGrade(exId,userId,reviewGrade,connection) {
+  return new Promise((resolve, reject) => {
+    const Query = 'UPDATE REVIEW SET review_grade = ? WHERE ex_id = ? AND user_id = ?'
+    connection.query(Query, [reviewGrade, exId, userId], (err, result) => {
       if (err) {
         reject(err)
       } else {

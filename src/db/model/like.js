@@ -1,30 +1,25 @@
-const connection = require('../../../config/dbpool')
-const mysql = require('mysql')
 
-
-exports.searchLike = function (ex_id, user_id, connection) {
+exports.searchLike = function (exId, userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'select * from favor where ex_id = ? and user_id = ?'
-    connection.query(Query, [ex_id, user_id], (err, data) => {
+    const Query = 'select count(*) AS CLike from FAVOR where ex_id = ? and user_id = ?'
+    connection.query(Query, [exId, userId], (err, data) => {
       if (err) {
-        reject(err)
+        reject('Like select query ERROR')
+
       } else {
-        if (data.length === 0) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
+        resolve(data)
       }
+      
     })
   })
 }
 
-exports.increaseLike = function (ex_id, user_id, connection) {
+exports.increaseLike = function (exId, userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'INSERT into favor values (?,?)'
-    connection.query(Query, [ex_id, user_id], (err, data) => {
+    const Query = 'INSERT into FAVOR values (?,?)'
+    connection.query(Query, [exId, userId], (err, data) => {
       if (err) {
-        reject(err)
+        reject('Like insert fail')
       } else {
         resolve(true)
       }
@@ -33,17 +28,39 @@ exports.increaseLike = function (ex_id, user_id, connection) {
 }
 
 
-exports.decreaseLike = function (ex_id, user_id, connection) {
+exports.decreaseLike = function (exId, userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'DELETE from favor where ex_id = ? and user_id = ?'
-    connection.query(Query, [ex_id, user_id], (err, result) => {
+    const Query = 'DELETE from FAVOR where ex_id = ? and user_id = ?'
+    connection.query(Query, [exId, userId], (err, result) => {
       if (err) {
-        console.log(err)
-        connection.release()
-        reject(err)
+        reject('Like delete fail')
       } else {
-        connection.release()
         resolve(true)
+      }
+    })
+  })
+}
+exports.getLikeCount = function (userId, connection) {
+  return new Promise((resolve, reject) => {
+    const Query = 'SELECT count(ex_id) AS countLike FROM FAVOR WHERE user_id = ?'
+    connection.query(Query, userId, (err, result) => {
+      if (err) {
+        reject('Like count fail')
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
+exports.getLikeList = function getLikeList(userId, connection) {
+  return new Promise((resolve, reject) => {
+    const Query =
+     'SELECT ex_title,ex_image FROM EXHIBITION, FAVOR WHERE user_id=? AND FAVOR.ex_id=EXHIBITION.ex_id'
+     connection.query(Query, userId, (err, result) => {
+      if (err) {
+        reject('Like List fail')
+      } else {
+        resolve(result)
       }
     })
   })
