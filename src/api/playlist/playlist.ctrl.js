@@ -1,66 +1,81 @@
 const docentList = require('../../db/model/siteList')
 const mysql = require('../../lib/dbConnection')
 const dbpool = require('../../../config/connection')
+const decodeTokenFunc = require('../../lib/token')
 
 exports.getListSite = async (req, res) => {
-  const { query } = req
+  let userNearDataResult
   try {
-    pool = await mysql(dbpool)
-    const queryResult = await docentList.siteList(query, dbpool)
+    const { latitude, longitude } = req.query
+
+    connection = await mysql(dbpool)
+    userNearDataResult = await docentList.siteList(latitude, longitude, connection)
   } catch (e) {
-    pool.release()
+    connection.release()
     res.status(500).send({
       status: 'fail',
       code: 6001,
       message: e,
     })
   }
-  pool.release()
+  connection.release()
   res.status(200).send({
-    status: 'fail',
+    status: 'success',
     code: 6000,
     message: 'success get site list',
-    data: queryResult,
+    data: userNearDataResult,
   })
 }
 
 
 exports.getListFavor = async (req, res) => {
-  const { query } = req
+  let userFavorDataResult
   try {
-    pool = await mysql(dbpool)
-    const queryResult = await docentList.favorList(query, dbpool)
+    //*****************************************************************
+    //토큰 사용시
+    const { user_token } = req.headers
+    const decodedTokenResult = await decodeTokenFunc.decodedToken(user_token, req.app.get('jwt-secret'))
+    const userId = decodedTokenResult.userID
+    //******************************************************************
+    connection = await mysql(dbpool)
+
+    userFavorDataResult = await docentList.favorList(userId, connection)
   } catch (e) {
-    pool.release()
+    connection.release()
     res.status(500).send({
       status: 'fail',
       code: 6002,
       message: e,
     })
   }
-  pool.release()
+  connection.release()
   res.status(200).send({
-    status: 'fail',
+    status: 'success',
     code: 6000,
     message: 'success get listfavor',
-    data: queryResult,
+    data: userFavorDataResult
   })
 }
 
-
+//도슨트 트랙리스트
 exports.getListGuide = async (req, res) => {
-  const { query } = req
+  let queryResult
   try {
-    const queryResult = await docentList.guideList(query)
+    const { exId } = req.query
+    connection = await mysql(dbpool)
+
+    queryResult = await docentList.guideList(exId, connection)
   } catch (e) {
+    connection.release()
     res.status(500).send({
       status: 'fail',
       code: 4001,
       message: e,
     })
   }
+  connection.release()
   res.status(200).send({
-    status: 'fail',
+    status: 'success',
     code: 4000,
     message: 'Guidelist select success',
     data: queryResult,

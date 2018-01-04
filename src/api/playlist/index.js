@@ -1,11 +1,11 @@
 const express = require('express')
 
-const palyCtrl = require('./playlist.ctrl')
+const playCtrl = require('./playlist.ctrl')
 
 const router = express.Router()
 
-router.get('/site', palyCtrl.getListSite)
-router.get('/favor', palyCtrl.getListFavor)
-router.get('/guide', palyCtrl.getListGuide)
+router.get('/site', playCtrl.getListSite)
+router.get('/favor', playCtrl.getListFavor)
+router.get('/guide', playCtrl.getListGuide)
 
 module.exports = router

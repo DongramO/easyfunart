@@ -32,8 +32,8 @@ exports.getReview = function getReview(query, connection) {
 
 exports.updateReview = function updateReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'UPDATE REVIEW SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? WHERE review_id = ? AND user_id = ?'
-    connection.query(Query, [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYYMMDD'), body.exId, userId], (err, result) => {
+    const Query = 'UPDATE review SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? WHERE review_id = ? AND user_id = ?'
+    connection.query(Query, [Number(body.reviewGrade), moment().format('YYYYMMDD'), body.reviewContent, file.location,  body.exId, userId], (err, result) => {
       if (err) {
         reject(err)
       } else {
@@ -52,6 +52,48 @@ exports.deleteReview = function deleteReview(reviewId, userId, connection) {
         reject(err)
       } else {
         resolve(result)
+      }
+    })
+  })
+}
+
+
+
+
+exports.getTotalReviewCount = (exId, connection) => {
+  return new Promise((resolve, reject) => {
+    const Query = 'select count(review_id) as grade_count from REVIEW where review_grade is NOT NULL and ex_id = ?'
+    connection.query(Query, exId, (err, data) => {
+      if(err) {
+        reject('select All Review Count Query Error')
+      } else {
+        resolve(data[0])
+      }
+    })
+  })
+}
+
+exports.getGroupGradeCount = (exId, connection) => {
+  return new Promise((resolve, reject) => {
+    const Query = 'select review_grade, count(review_grade) as count from REVIEW where ex_id = ? group by review_grade;'
+    connection.query(Query, exId, (err, data) => {
+      if(err) {
+        reject('select Reivew Grade Group Query Error')
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
+exports.getExReviewLimit3 = (exId, connection) => {
+  return new Promise((resolve, reject) => {
+    const Query = 'select review_id, review_date, review_grade, review_content, review_image, user_nickname, user_profile from REVIEW, USER where REVIEW.user_id = USER.user_id order by review_date DESC limit 3'
+    connection.query(Query, (err, data) => {
+      if(err) {
+        reject('select Reivew Limit 3 Query Error')
+      } else {
+        resolve(data)
       }
     })
   })

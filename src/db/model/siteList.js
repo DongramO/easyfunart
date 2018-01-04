@@ -1,9 +1,8 @@
-const mysql = require('../../../config/connection')
-const upload = require('../../lib/s3Connect')
+// const mysql = require('../../../config/connection')
+// const upload = require('../../lib/s3Connect')
 
-exports.siteList = function siteList(queryString, connection) {
+exports.siteList = function siteList(latitude, longitude, connection) {
   return new Promise((resolve, reject) => {
-    const { latitude, longitude } = queryString
     const Query = 'SELECT * FROM GALLERY where gallery_longitude=? and gallery_longitude=?'
     connection.query(Query, [Number(latitude), Number(longitude)], (err, result) => {
       if (err) {
@@ -15,13 +14,12 @@ exports.siteList = function siteList(queryString, connection) {
   })
 }
 
-exports.favorList = function favorList(queryString, connection) {
+exports.favorList = function favorList(userId, connection) {
   return new Promise((resolve, reject) => {
-    const { userId } = queryString
-    const Query = 'SELECT EX.ex_title FROM EXHIBITION as EX inner join FAVOR as LK on LK.ex_id = EX.ex_id where user_id = ?'
-    connection.query(Query, [userId], (err, result) => {
+    const Query = 'select ex_id, ex_title, ex_image, gallery_name from EXHIBITION, GALLERY where EXHIBITION.gallery_id = GALLERY.gallery_id and ex_id in (select ex_id from FAVOR where user_id = ?);'
+    connection.query(Query, userId, (err, result) => {
       if (err) {
-        reject(err)
+        reject('Select User`s Like Exhibition Query Error')
       } else {
         resolve(result)
       }
@@ -29,13 +27,12 @@ exports.favorList = function favorList(queryString, connection) {
   })
 }
 
-exports.guideList = function guideList(queryString, connection) {
+exports.guideList = function guideList(exId, connection) {
   return new Promise((resolve, reject) => {
-    const { exId } = queryString
-    const Query = 'SELECT DO.docent_title FROM DOCENT as DO where ex_id = ?'
-    connection.query(Query, [exId], (err, result) => {
+    const Query = 'SELECT DO.docent_id, DO.docent_floor, DO.docent_title, DO.docent_track FROM DOCENT as DO where ex_id = ?'
+    connection.query(Query, exId, (err, result) => {
       if (err) {
-        reject(err)
+        reject('docent Track List Select Query Error')
       } else {
         resolve(result)
       }

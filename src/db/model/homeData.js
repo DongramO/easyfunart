@@ -12,19 +12,15 @@ exports.homeData = function homeData(connection) {
     })
   })
 }
-
-exports.ThemeData = function ThemeData(query, connection) {
+////수정 필요 
+exports.ThemeData = function ThemeData(connection) {
   return new Promise((resolve, reject) => {
-    const { theme } = query
     const Query = 'select * from EasyFunArt.EXHIBITION as ex left outer join EasyFunArt.FAVOR as fv on ex.ex_id = fv.ex_id where ex_theme = ?'
-    connection.query(Query, [theme], (err, result) => {
+    //아마도 오늘 날짜를 넣어야 할 듯
+    connection.query(Query, (err, result) => {
       if (err) {
-        console.log(err)
-        connection.release()
         resolve(false)
       } else {
-        console.log(result)
-        connection.release()
         resolve(result)
       }
     })
@@ -38,10 +34,8 @@ exports.serialData = function serialData(serial, connection) {
     const Query = 'SELECT * FROM EXHIBITION where ex_serial_num = ?'
     connection.query(Query, [serial], (err, result) => {
       if (err) {
-        connection.release()
         resolve(false)
       } else {
-        connection.release()
         resolve(result[0])
       }
     })

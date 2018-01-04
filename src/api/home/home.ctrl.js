@@ -3,20 +3,22 @@ const mysql = require('../../lib/dbConnection')
 const dbpool = require('../../../config/connection')
 
 exports.mainData = async (req, res) => {
-  const { query } = req
+  let topData, bottomData
   try {
-    const pool = await mysql(dbpool)
-    const topData = await homeList.homeData(pool)
-    const bottomData = await homeList.ThemeData(query, pool)
+    pool = await mysql(dbpool)
+    topData = await homeList.homeData(pool)
+    bottomData = await homeList.ThemeData(pool)
   } catch (e) {
+    pool.release()
     res.status(500).send({
       status: 'fail',
       code: 2001,
       message: e,
     })
   }
+  pool.release()
   res.status(200).send({
-    status: 'fail',
+    status: 'success',
     code: 2000,
     message: 'success add Preference',
     data: {
@@ -48,7 +50,7 @@ exports.serialNum = async (req, res) => {
   })
 }
 
-exports.grade = async (res, req) => {
+exports.grade = async (req, res) => {
   const { ex_id, user_id, revie_grade } = req.query
   try {
     const pool = await connect(dbpool) // pool에 주어진 DB정보를 가지고 connection한 결과값을 resultㅇ ㅔ
