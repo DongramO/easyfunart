@@ -1,1 +1,1 @@
-# easyfunart
+# EasyFunArt_server
