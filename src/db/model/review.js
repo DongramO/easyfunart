@@ -32,7 +32,7 @@ exports.getReview = function getReview(query, connection) {
 
 exports.updateReview = function updateReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'UPDATE review SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? WHERE review_id = ? AND user_id = ?'
+    const Query = 'UPDATE REIVEW SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? WHERE review_id = ? AND user_id = ?'
     connection.query(Query, [Number(body.reviewGrade), moment().format('YYYYMMDD'), body.reviewContent, file.location,  body.exId, userId], (err, result) => {
       if (err) {
         reject(err)

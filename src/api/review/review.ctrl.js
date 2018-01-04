@@ -65,9 +65,9 @@ exports.getReview = async (req, res) => {
 exports.updateReivew = async (req, res) => {
   const { body, file } = req
   const { exId, reviewGrade } = body
-  const { token } = req.header
+  const { token } = req.headers
   try {
-    const tokenInfo = await jwt.decodedToken(token)
+    const tokenInfo = await jwt.decodedToken(token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
     const queryResult = await reviewModel.writeReview(body, file, 1, pool)
     const totalCount = await count.getcount(exId, pool)
@@ -80,7 +80,7 @@ exports.updateReivew = async (req, res) => {
     res.status(500).send({
       status: 'fail',
       code: 7003,
-      message: 'write review select fail',
+      message: 'update review fail',
     })
     return
   }
@@ -88,15 +88,16 @@ exports.updateReivew = async (req, res) => {
   res.status(200).send({
     status: 'success',
     code: 7000,
-    message: 'update review select success',
+    message: 'update review success',
   })
 }
 
 
 exports.deleteReview = async (req, res) => {
   const { reviewId } = req.query
+  const { token } = req.headers
   try {
-    const tokenInfo = await jwt.decodedToken(token)
+    const tokenInfo = await jwt.decodedToken(token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
     queryResult = await reviewModel.deleteReview(reviewId, tokenInfo.userId, pool)
   } catch (e) {
