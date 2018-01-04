@@ -47,7 +47,7 @@ exports.mainData = async (req, res) => {
   }
   pool.release()
   res.status(200).send({
-    status: 'fail',
+    status: 'succes',
     code: 2000,
     message: 'success add Preference',
     data: {
