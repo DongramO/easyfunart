@@ -112,3 +112,17 @@ exports.getExScore = (exId, connection) => {
     })
   })
 }
+
+
+exports.getAllExInfo = function (connection) {
+  return new Promise((resolve, reject) => {
+    const Query = 'select gallery_id, ex_id, ex_image, ex_title from EXHIBITION order by gallery_id ASC'
+    connection.query(Query, (err, data) => {
+      if (err) {
+        reject('Exhibition Select Query Error')
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}

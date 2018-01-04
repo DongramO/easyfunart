@@ -1,6 +1,7 @@
 // const mysql = require('../../../config/connection')
 // const upload = require('../../lib/s3Connect')
 
+////이거 필요없음
 exports.siteList = function siteList(latitude, longitude, connection) {
   return new Promise((resolve, reject) => {
     const Query = 'SELECT * FROM GALLERY where gallery_longitude=? and gallery_longitude=?'
