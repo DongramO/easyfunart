@@ -2,11 +2,13 @@ const jwt = require('jsonwebtoken')
 
 
 exports.generateToken = function generateToken(secret, user) {
+  console.log(user)
   return new Promise((resolve, reject) => {
     const payload = {
       userID: user[0].user_id,
       userProfile: user[0].user_profile,
       userNickname: user[0].user_nickname,
+      userLevel: user[0].user_level
     }
     const token = jwt.sign(payload, secret, {
       issuer: 'EasyFunArt',
@@ -16,6 +18,7 @@ exports.generateToken = function generateToken(secret, user) {
       if (err) {
         reject('token generate error')
       }
+      console.log('token', token)
       resolve(token)
     })
   })

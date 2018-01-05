@@ -100,3 +100,32 @@ exports.getExReviewLimit3 = (exId, connection) => {
     })
   })
 }
+
+
+exports.getReviewCount = function getReviewCount(userId, connection) {
+  //mypage.js
+  return new Promise((resolve, reject) => {
+    const Query = 'SELECT count(ex_id) AS countReview FROM REVIEW WHERE user_id = ? AND review_content is NOT NULL'
+    connection.query(Query, userId, (err, result) => {
+      if (err) {
+        reject('Review count fail')
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
+
+exports.getMyReviewList = function getMyReviewList(userId, connection) {
+  //mypage.js
+  return new Promise((resolve, reject) => {
+    const Query ='SELECT user_nickname,review_grade,review_content,review_date,review_watch_date,ex_title FROM USER,REVIEW,EXHIBITION WHERE REVIEW.user_id=? and REVIEW.user_id=USER.user_id and EXHIBITION.ex_id=REVIEW.ex_id AND review_content is NOT NULL'
+     connection.query(Query, userId, (err, result) => {
+      if (err) {
+        reject('My Review List fail')
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}

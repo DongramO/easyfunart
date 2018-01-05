@@ -43,18 +43,7 @@ exports.insertGrade = function insertGrade(exId, userId, reviewGrade,connection)
     })
   })
 }
-exports.getGradeCount = function (userId, connection) {
-  return new Promise((resolve, reject) => {
-    const Query = 'SELECT count(ex_id) AS countGrade FROM REVIEW WHERE user_id = ? '
-    connection.query(Query, userId, (err, result) => {
-      if (err) {
-        reject('select Grade count fail')
-      } else {
-        resolve(result)
-      }
-    })
-  })
-}
+
 exports.modifyGrade = function modifyGrade(exId,userId,reviewGrade,connection) {
   return new Promise((resolve, reject) => {
     const Query = 'UPDATE REVIEW SET review_grade = ? WHERE ex_id = ? AND user_id = ?'
@@ -63,6 +52,20 @@ exports.modifyGrade = function modifyGrade(exId,userId,reviewGrade,connection) {
         reject(err)
       } else {
         resolve(true)
+      }
+    })
+  })
+}
+
+exports.getGradeCount = function (userId, connection) {
+  //mypage.js
+  return new Promise((resolve, reject) => {
+    const Query = 'SELECT count(ex_id) AS countGrade FROM REVIEW WHERE user_id = ? '
+    connection.query(Query, userId, (err, result) => {
+      if (err) {
+        reject('select Grade count fail')
+      } else {
+        resolve(result)
       }
     })
   })

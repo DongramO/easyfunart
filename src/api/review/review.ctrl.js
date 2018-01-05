@@ -8,6 +8,7 @@ const dbpool = require('../../../config/connection')
 const jwt = require('../../lib/token')
 
 exports.writeReview = async (req, res) => {
+  
   const { body, file } = req
   const { exId, reviewGrade } = body
   const { token } = req.headers
@@ -20,7 +21,6 @@ exports.writeReview = async (req, res) => {
     const newAverage = renewFunc(totalCount.count, average.grade, reviewGrade)
     const scoreResult = await exhibition.updateScore(exId, newAverage, pool)
   } catch (e) {
-    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
@@ -69,13 +69,12 @@ exports.updateReivew = async (req, res) => {
   try {
     const tokenInfo = await jwt.decodedToken(token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
-    const queryResult = await reviewModel.writeReview(body, file, 1, pool)
+    const queryResult = await reviewModel.writeReview(body, file, tokenInfo.userID, pool)
     const totalCount = await count.getcount(exId, pool)
     const average = await exhibition.getExScore(exId, pool)
     const newAverage = renewFunc(totalCount.count, average.grade, reviewGrade)
     const scoreResult = await exhibition.updateScore(exId, newAverage, pool)
   } catch (e) {
-    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',

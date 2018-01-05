@@ -3,7 +3,6 @@ exports.updateScore = function updateScore(exId, newAverage, connection) {
     const Query = 'UPDATE EXHIBITION SET ex_average_grade = ? where ex_id = ?'
     connection.query(Query, [newAverage, exId], (err, result) => {
       if (err) {
-        console.log(err)
         reject(err)
       } else {
         resolve(result)

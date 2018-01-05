@@ -41,6 +41,7 @@ exports.decreaseLike = function (exId, userId, connection) {
   })
 }
 exports.getLikeCount = function (userId, connection) {
+    //mypage.js 
   return new Promise((resolve, reject) => {
     const Query = 'SELECT count(ex_id) AS countLike FROM FAVOR WHERE user_id = ?'
     connection.query(Query, userId, (err, result) => {

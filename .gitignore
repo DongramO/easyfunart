@@ -57,4 +57,11 @@ typings/
 # dotenv environment variables file
 .env
 
+<<<<<<< Updated upstream
 config/
+=======
+# ignore config files
+config/
+
+
+>>>>>>> Stashed changes
