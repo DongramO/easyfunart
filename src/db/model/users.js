@@ -3,7 +3,6 @@ exports.getUserInfo = function getUserInfo(snsToken, connection) {
     const Query = 'SELECT * FROM USER where user_sns_token = ?'
     connection.query(Query, [snsToken], (err, result) => {
       if (err) {
-        connection.release()
         reject('user info select error')
       } else {
         resolve(result)
@@ -13,6 +12,7 @@ exports.getUserInfo = function getUserInfo(snsToken, connection) {
 }
 
 exports.insertUserToken = function (userToken, connection) {
+  console.log(userToken)
   return new Promise((resolve, reject) => {
     const Query = 'INSERT INTO USER(user_sns_token) VALUES (?)'
     connection.query(Query, userToken, (err, result) => {
@@ -33,7 +33,7 @@ exports.compareSnsToken = function compareSnsToken (snsToken, connection) {
         reject('user SNS Token Select Query Error')
       } else {
         if(data.length === 0) {
-          reject('user SNS Token Compare Error')
+          resolve(false)
         } else {
           resolve(true)
         }
@@ -70,32 +70,33 @@ exports.selectUserNickname = function selectUserNickname(userNickname,connection
   })
  }
 
-exports.addUserData = function(body,userId,connection){
+exports.updateUserInfo = function(userInfo, body, connection){
     return new Promise((resolve, reject) => {
-      const {userNickname, userSex, userAge} = body
-    const Query = 'UPDATE USER SET user_Nickname = ?,user_sex= ?, user_age= ?  WHERE user_id = ?'
-    connection.query(Query,[userNickname,userSex,userAge, userId],(err, data) => {
+      const { userNickname, userSex, userAge } = body      
+      const Query = 'UPDATE USER SET user_nickname= ?, user_sex= ?, user_age= ? WHERE user_id= ?'
+      console.log(userNickname, userSex, userAge, userInfo.userID)
+      connection.query(Query,[userNickname, userSex, userAge, userInfo.userID], (err, data) => {
+        if (err) {
+          reject('user data update ERR')
+        } else {
+          resolve(true)
+        }
+      })
+    })
+}
+
+exports.modifyNicknameInfo= function modifyNicknameInfo (userNickname,userId,connection) {
+  return new Promise((resolve, reject) => {
+    const Query = 'UPDATE USER SET user_nickname =? WHERE user_id =?'
+    connection.query(Query, [userNickname,userId], (err, result) => {
       if (err) {
-        reject('user data update ERR')
+        reject('user Nickname modify Query Error')
       } else {
-        resolve(true)
+        resolve(result)
+        
       }
     })
   })
-}
-exports.modifyNicknameInfo=function modifyNicknameInfo (userNickname,userId,connection) {
-  //mypage.js 
-return new Promise((resolve, reject) => {
-  const Query = 'UPDATE USER SET user_nickname =? WHERE user_id =?'
-  connection.query(Query, [userNickname,userId], (err, result) => {
-    if (err) {
-      reject('user Nickname modify Query Error')
-    } else {
-      resolve(result)
-      
-    }
-  })
-})
 }
 exports.getMypageUserInfo = function getMypageUserInfo(userId,connection) {
   //mypage.js 

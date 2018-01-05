@@ -1,4 +1,3 @@
-
 const userData = require('../../db/model/users')
 const PreferenceData = require('../../db/model/preference')
 const dbpool = require('../../../config/connection')
@@ -7,20 +6,20 @@ const tokenData = require('../../lib/token')
 
 exports.addUserInfo = async (req,res) => {
   let userDataResult
-  const  { user_token }  = req.headers
-  const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
-  const userId = userInfo.userID
   const { body } = req
+  const { user_token } = req.headers
   try {
     pool = await mysql(dbpool)
-    userDataResult = await userData.addUserData(body,userId,pool)   
+    const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+    userDataResult = await userData.updateUserInfo(userInfo, body, pool)
   } catch (e) {
     pool.release()
     res.status(500).send({
       status: 'fail',
       code: 8001,
-      message: e,
+      message: e
     })
+    return
   }
   pool.release()
   res.status(200).send({
@@ -33,12 +32,11 @@ exports.addUserInfo = async (req,res) => {
 exports.addPreference = async (req, res) => {
   let preferenceInsertResult
   const  { user_token }  = req.headers
-  const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
-  const userId = userInfo.userID
   const { body } = req
   try {
+    const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
-    preferenceInsertResult = await PreferenceData.insertPreference(body,userId,pool)   
+    preferenceInsertResult = await PreferenceData.insertPreference(body, userInfo.userID, pool)   
   } catch (e) {
     pool.release()
     res.status(500).send({
@@ -46,6 +44,7 @@ exports.addPreference = async (req, res) => {
       code: 8001,
       message: e,
     })
+    return
   }
   pool.release()
   res.status(200).send({

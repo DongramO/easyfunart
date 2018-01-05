@@ -1,13 +1,12 @@
-const exhibitionData = require('../../../db/model/exhibitionData')
-const dbPool = require('../../../../config/connection')
-const dbConnection = require('../../../lib/dbConnection')
+const exhibitionData = require('../../db/model/exhibitionData')
+const dbPool = require('../../../config/connection')
+const dbConnection = require('../../lib/dbConnection')
 
 exports.getGalleryInfo = async (req, res) => {
     let exGalleryDataResult
     try {
-        const { galleryId } = req.query
+        const { galleryId } = req.params
         connection = await dbConnection(dbPool)
-
         exGalleryDataResult = await exhibitionData.getGalleryInfo(galleryId, connection)
     } catch (e) {
         connection.release()

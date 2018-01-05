@@ -21,7 +21,6 @@ exports.getExInfo = async (req, res) => {
         connection = await dbConnection(dbPool)
 
         exDetailDataResult = await exhibitionData.getExDetailInfo(req.params.exId, connection)
-        exAuthorDataResult = await exhibitionData.getExAuthorInfo(exDetailDataResult[0].author_id, connection)
         exUserLikeResult = await exhibitionData.getUserExLikeInfo(req.params.exId, userId, connection)
         exUserGradeResult = await exhibitionData.getUserReviewGrade(req.params.exId, userId, connection)
         preferenceDataResult = await preferenceData.getPreferenceInfo(userId, connection)
@@ -87,13 +86,13 @@ exports.getExInfo = async (req, res) => {
             selectedHashtag: selected,
             unSelectedHashtag: unSelected,
             authorResult: {
-                author_image: exAuthorDataResult[0].author_profile,
-                author_content: exAuthorDataResult[0].author_content
+                author_name : exDetailDataResult[0].ex_author_name,
+                author_image: exDetailDataResult[0].ex_author_profile,
+                author_content: exDetailDataResult[0].ex_author_content
             }
         }
     })
 }
-
 
 
 

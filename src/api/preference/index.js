@@ -4,6 +4,6 @@ const preCtrl = require('./preference.ctrl')
 
 const router = express.Router()
 
-router.post('/user', preCtrl.addUserInfo)
-router.post('/pre', preCtrl.addPreference)
+router.post('/users', preCtrl.addUserInfo)
+router.post('/', preCtrl.addPreference)
 module.exports = router

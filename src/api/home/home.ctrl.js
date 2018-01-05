@@ -140,13 +140,12 @@ exports.scoreGrade = async (req, res) => {
   })
 }
 
-//////보내는 형식 model도 고쳤음
 exports.like = async (req, res) => {
   let likeSearchResult,likeResult
   const  { user_token }  = req.headers
   const userInfo = await tokenData.decodedToken(user_token,req.app.get('jwt-secret') )
   const userId = userInfo.userID
-  const { exId } = req.query
+  const {  exId } = req.query
   pool =await mysql(dbpool)
   try {
     likeSearchResult = await likeData.searchLike(exId, userId, pool)
@@ -168,12 +167,5 @@ exports.like = async (req, res) => {
     status: 'success',
     code: 4000,
     message: 'successful add/delete like',
-<<<<<<< HEAD
-    data : likeResult
-=======
-    data : {
-      likeFlag : likeResult
-    }
->>>>>>> fb6a1e8a53f857f9ae8820f2c3c0f97edd2b11ad
   })
 }
