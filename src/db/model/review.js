@@ -3,7 +3,9 @@ const upload = require('../../lib/s3Connect')
 
 const moment = require('moment')
 
+//이미지 없을 때 파라미터 바꾸기
 exports.writeReview = function writeReview(body, file, userId, connection) {
+  console.log(file.location)
   return new Promise((resolve, reject) => {
     const Query = 'INSERT INTO REVIEW(review_grade, review_content, review_image, ex_id, user_id) values(?,?,?,?,?)'
     connection.query(Query, [Number(body.reviewGrade), body.reviewContent, file.location, body.exId, userId], (err, result) => {
@@ -62,7 +64,7 @@ exports.deleteReview = function deleteReview(reviewId, userId, connection) {
 
 exports.getTotalReviewCount = (exId, connection) => {
   return new Promise((resolve, reject) => {
-    const Query = 'select count(review_id) as grade_count from REVIEW where review_grade is NOT NULL and ex_id = ?'
+    const Query = 'select count(review_id) as grade_count from REVIEW where review_content is NOT NULL and ex_id = ?'
     connection.query(Query, exId, (err, data) => {
       if(err) {
         reject('select All Review Count Query Error')

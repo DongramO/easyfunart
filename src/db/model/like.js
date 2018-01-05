@@ -21,7 +21,7 @@ exports.increaseLike = function (exId, userId, connection) {
       if (err) {
         reject('Like insert fail')
       } else {
-        resolve(true)
+        resolve(1)
       }
     })
   })
@@ -35,7 +35,7 @@ exports.decreaseLike = function (exId, userId, connection) {
       if (err) {
         reject('Like delete fail')
       } else {
-        resolve(true)
+        resolve(0)
       }
     })
   })

@@ -10,11 +10,11 @@ const jwt = require('../../lib/token')
 exports.writeReview = async (req, res) => {
   const { body, file } = req
   const { exId, reviewGrade } = body
-  const { token } = req.header
+  const { token } = req.headers
   try {
-    const tokenInfo = await jwt.decodedToken(token)
+    const tokenInfo = await jwt.decodedToken(token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
-    const queryResult = await reviewModel.writeReview(body, file, 1, pool)
+    const queryResult = await reviewModel.writeReview(body, file, tokenInfo.userID, pool)
     const totalCount = await count.getcount(exId, pool)
     const average = await exhibition.getExScore(exId, pool)
     const newAverage = renewFunc(totalCount.count, average.grade, reviewGrade)

@@ -97,7 +97,7 @@ exports.getExInfo = async (req, res) => {
 
 
 
-
+///getTotalReviewCount 메소드 쿼리문 바꿈
 exports.getExReview = async (req, res) => {
     let averageGradeResult, exReviewDataResult, totalGradeCount, groupGradeCount
     let g_1 = 0, g_2 = 0, g_3 = 0, g_4 = 0, g_5 = 0

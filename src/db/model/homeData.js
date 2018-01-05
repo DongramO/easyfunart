@@ -2,7 +2,7 @@ const connection = require('../../lib/dbConnection')
 
 exports.homeData = function homeData(connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'SELECT ex_title, ex_image, ex_average_grade FROM EXHIBITION ORDER BY ex_average_grade LIMIT 3'
+    const Query = 'SELECT ex_id, ex_title, ex_image, ex_average_grade FROM EXHIBITION ORDER BY ex_average_grade LIMIT 3'
     connection.query(Query, (err, result) => {
       if (err) {
         reject(err)
@@ -12,10 +12,10 @@ exports.homeData = function homeData(connection) {
     })
   })
 }
-////수정 필요 
+////갤러리 이름 나오게 변경함 
 exports.ThemeData = function ThemeData(query, numSet, connection) {
   return new Promise((resolve, reject) => {
-    const Query = '(select * from EasyFunArt.EXHIBITION as ex inner join EasyFunArt.THEME as th on ex.theme_id = th.theme_id where ex.theme_id = ? and th.theme_date > curdate() limit 3 ) UNION ALL ( select * from EasyFunArt.EXHIBITION as ex inner join EasyFunArt.THEME as th on ex.theme_id = th.theme_id where ex.theme_id = ? and th.theme_date > curdate() limit 3 ) UNION ALL ( select * from EasyFunArt.EXHIBITION as ex inner join EasyFunArt.THEME as th on ex.theme_id = th.theme_id where ex.theme_id = ? and th.theme_date > curdate() limit 3 )'
+    const Query = '(select * from EXHIBITION, THEME, GALLERY where EXHIBITION.theme_id = THEME.theme_id and GALLERY.gallery_id = EXHIBITION.gallery_id and EXHIBITION.theme_id = ? and THEME.theme_date > curdate() limit 3 ) UNION ALL ( select * from EXHIBITION, THEME, GALLERY where EXHIBITION.theme_id = THEME.theme_id and EXHIBITION.gallery_id = GALLERY.gallery_id and EXHIBITION.theme_id = ? and THEME.theme_date > curdate() limit 3 ) UNION ALL ( select * from EXHIBITION, THEME, GALLERY where EXHIBITION.theme_id = THEME.theme_id and EXHIBITION.gallery_id = GALLERY.gallery_id and EXHIBITION.theme_id = ? and THEME.theme_date > curdate() limit 3 )'
     connection.query(Query, [ numSet[0], numSet[1], numSet[2] ], (err, result) => {
       if (err) {
         reject(err)
