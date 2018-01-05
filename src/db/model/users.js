@@ -33,7 +33,7 @@ exports.compareSnsToken = function compareSnsToken (snsToken, connection) {
         reject('user SNS Token Select Query Error')
       } else {
         if(data.length === 0) {
-          reject('user SNS Token Compare Error')
+          resolve(false)
         } else {
           resolve(true)
         }

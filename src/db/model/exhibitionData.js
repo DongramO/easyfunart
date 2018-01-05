@@ -12,32 +12,8 @@ exports.getExDetailInfo = function (exId, connection) {
   })
 }
 
-exports.getExAuthorInfo = function (authorId, connection) {
-  return new Promise((resolve, reject) => {
-    const Query = 'select * from AUTHOR where author_id = ?'
-    connection.query(Query, authorId, (err, data) => {
-      if (err) {
-        reject('Author Select Query Error')
-      } else {
-        resolve(data)
-      }
-    })
-  })
-}
 
 
-exports.getAuthorExInfo = function (authorId, connection) {
-  return new Promise((resolve, reject) => {
-    const Query = 'select EXHIBITION.ex_id, ex_title, ex_image from EXHIBITION, EXHIBITION_DETAIL, AUTHOR where EXHIBITION.ex_id = EXHIBITION_DETAIL.ex_id and EXHIBITION_DETAIL.author_id = AUTHOR.author_id and EXHIBITION_DETAIL.author_id = ?;'
-    connection.query(Query, authorId, (err, data) => {
-      if (err) {
-        reject('author`s Exhibition Select Query Error')
-      } else {
-        resolve(data)
-      }
-    })
-  })
-}
 
 exports.getGalleryInfo = function (galleryId, connection) {
   return new Promise((resolve, reject) => {

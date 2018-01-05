@@ -26,16 +26,46 @@ exports.mainData = async (req, res) => {
       theme2: [],
       theme3: []
     }
-    for(let i =0; i<3; i++) {
+    console.log(bottomData)
+    for(let i = 0; i < 3; i++) {
       for(let j=0; j<bottomData.length; j++) {
         if(bottomData[j].theme_id === numSet[i]) {
-          if(i === 0) bottomResult.theme1.push(bottomData[j])
-          if(i === 1) bottomResult.theme2.push(bottomData[j])
-          if(i === 2) bottomResult.theme3.push(bottomData[j])
+          if(i === 0) bottomResult.theme1.push({
+            theme_title: bottomData[j].theme_title,
+            ex_id: bottomData[j].ex_id,
+            ex_title: bottomData[j].ex_title,
+            ex_start_date: bottomData[j].ex_start_date,
+            ex_end_date: bottomData[j].ex_end_date,
+            ex_image: bottomData[j].ex_image,
+            ex_average_grade: bottomData[j].ex_average_grade,
+            gallery_id: bottomData[j].gallery_id,
+            gallery_name: bottomData[j].gallery_name,
+          })
+          if(i === 1) bottomResult.theme2.push({
+            theme_title: bottomData[j].theme_title,
+            ex_id: bottomData[j].ex_id,
+            ex_title: bottomData[j].ex_title,
+            ex_start_date: bottomData[j].ex_start_date,
+            ex_end_date: bottomData[j].ex_end_date,
+            ex_image: bottomData[j].ex_image,
+            ex_average_grade: bottomData[j].ex_average_grade,
+            gallery_id: bottomData[j].gallery_id,
+            gallery_name: bottomData[j].gallery_name,
+          })
+          if(i === 2) bottomResult.theme3.push({
+            theme_title: bottomData[j].theme_title,
+            ex_id: bottomData[j].ex_id,
+            ex_title: bottomData[j].ex_title,
+            ex_start_date: bottomData[j].ex_start_date,
+            ex_end_date: bottomData[j].ex_end_date,
+            ex_image: bottomData[j].ex_image,
+            ex_average_grade: bottomData[j].ex_average_grade,
+            gallery_id: bottomData[j].gallery_id,
+            gallery_name: bottomData[j].gallery_name,
+          })
         }
       }
     }
-    console.log(bottomResult)
   } catch (e) {
     console.log(e)
     pool.release()
@@ -47,7 +77,7 @@ exports.mainData = async (req, res) => {
   }
   pool.release()
   res.status(200).send({
-    status: 'fail',
+    status: 'succes',
     code: 2000,
     message: 'success add Preference',
     data: {

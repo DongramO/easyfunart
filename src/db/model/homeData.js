@@ -2,7 +2,7 @@ const connection = require('../../lib/dbConnection')
 
 exports.homeData = function homeData(connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'SELECT ex_id, ex_title, ex_image, ex_average_grade FROM EXHIBITION ORDER BY ex_average_grade LIMIT 3'
+    const Query = 'SELECT ex_id, ex_title, ex_image, ex_average_grade, EXHIBITION.gallery_id FROM EXHIBITION, GALLERY where EXHIBITION.gallery_id = GALLERY.gallery_id ORDER BY ex_average_grade DESC LIMIT 3'
     connection.query(Query, (err, result) => {
       if (err) {
         reject(err)
