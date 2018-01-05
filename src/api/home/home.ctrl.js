@@ -168,8 +168,12 @@ exports.like = async (req, res) => {
     status: 'success',
     code: 4000,
     message: 'successful add/delete like',
+<<<<<<< HEAD
+    data : likeResult
+=======
     data : {
       likeFlag : likeResult
     }
+>>>>>>> fb6a1e8a53f857f9ae8820f2c3c0f97edd2b11ad
   })
 }

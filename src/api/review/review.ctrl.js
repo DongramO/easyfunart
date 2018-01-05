@@ -21,8 +21,11 @@ exports.writeReview = async (req, res) => {
     const newAverage = renewFunc(totalCount.count, average.grade, reviewGrade)
     const scoreResult = await exhibition.updateScore(exId, newAverage, pool)
   } catch (e) {
+<<<<<<< HEAD
+=======
    
     console.log(e)
+>>>>>>> fb6a1e8a53f857f9ae8820f2c3c0f97edd2b11ad
     pool.release()
     res.status(500).send({
       status: 'fail',
@@ -77,7 +80,6 @@ exports.updateReivew = async (req, res) => {
     const newAverage = renewFunc(totalCount.count, average.grade, reviewGrade)
     const scoreResult = await exhibition.updateScore(exId, newAverage, pool)
   } catch (e) {
-    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
