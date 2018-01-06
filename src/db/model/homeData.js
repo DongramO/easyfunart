@@ -15,11 +15,39 @@ exports.homeData = function homeData(connection) {
 ////갤러리 이름 나오게 변경함 
 exports.ThemeData = function ThemeData(query, numSet, connection) {
   return new Promise((resolve, reject) => {
-    const Query = '(select * from EXHIBITION, THEME, GALLERY where EXHIBITION.theme_id = THEME.theme_id and GALLERY.gallery_id = EXHIBITION.gallery_id and EXHIBITION.theme_id = ? and THEME.theme_date > curdate() limit 3 ) UNION ALL ( select * from EXHIBITION, THEME, GALLERY where EXHIBITION.theme_id = THEME.theme_id and EXHIBITION.gallery_id = GALLERY.gallery_id and EXHIBITION.theme_id = ? and THEME.theme_date > curdate() limit 3 ) UNION ALL ( select * from EXHIBITION, THEME, GALLERY where EXHIBITION.theme_id = THEME.theme_id and EXHIBITION.gallery_id = GALLERY.gallery_id and EXHIBITION.theme_id = ? and THEME.theme_date > curdate() limit 3 )'
+    const Query = 
+    `(select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
+      from EXHIBITION as E
+  inner join THEME as T on E.theme_id = T.theme_id 
+  inner join GALLERY as G on G.gallery_id = E.gallery_id 
+      left join FAVOR 
+  on E.ex_id = FAVOR.ex_id
+      where E.theme_id = 1
+      and T.theme_date > curdate() group by E.ex_id limit 3)
+UNION ALL
+  (select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
+      from EXHIBITION as E
+  inner join THEME as T on E.theme_id = T.theme_id 
+  inner join GALLERY as G on G.gallery_id = E.gallery_id 
+      left join FAVOR 
+  on E.ex_id = FAVOR.ex_id
+      where E.theme_id = 2
+      and T.theme_date > curdate() group by E.ex_id limit 3)
+UNION ALL
+  (select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
+      from EXHIBITION as E
+  inner join THEME as T on E.theme_id = T.theme_id 
+  inner join GALLERY as G on G.gallery_id = E.gallery_id 
+      left join FAVOR 
+  on E.ex_id = FAVOR.ex_id
+      where E.theme_id = 3
+      and T.theme_date > curdate() group by E.ex_id limit 3)`
+
     connection.query(Query, [ numSet[0], numSet[1], numSet[2] ], (err, result) => {
-      if (err) {
+      if (err) { 
         reject(err)
       } else {
+        console.log(result)
         resolve(result)
       }
     })

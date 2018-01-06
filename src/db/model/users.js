@@ -27,11 +27,13 @@ exports.insertUserToken = function (userToken, connection) {
 
 exports.compareSnsToken = function compareSnsToken (snsToken, connection) {
   return new Promise ((resolve, reject) => {
+    console.log(snsToken)
     const Query = 'select user_id from USER where user_sns_token = ?'
     connection.query(Query, snsToken, (err, data) => {
       if(err) {
         reject('user SNS Token Select Query Error')
       } else {
+        console.log(data)
         if(data.length === 0) {
           resolve(false)
         } else {

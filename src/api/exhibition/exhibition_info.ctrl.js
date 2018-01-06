@@ -81,8 +81,7 @@ exports.getExInfo = async (req, res) => {
             },
             exhibition: {
                 average_grade: exDetailDataResult[0].ex_average_grade,
-                content: exDetailDataResult[0].ex_content,
-                gallery_id : exDetailDataResult[0].gallery_id
+                content: exDetailDataResult[0].ex_content
             },
             selectedHashtag: selected,
             unSelectedHashtag: unSelected,

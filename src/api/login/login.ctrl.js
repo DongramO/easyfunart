@@ -5,37 +5,23 @@ const mysql = require('../../lib/dbConnection')
 const dbpool = require('../../../config/connection')
 
 exports.login = async (req, res) => {
-<<<<<<< HEAD
   //헤더로 jwt 토큰을 안 줌 => db에서 같은 sns토큰을 가지고 있는 회원 확인
   //1. 그 회원이 있으면 유저id 긁어와서 jwt토큰 발행
   //2. 그 회원이 없으면 새로 유저정보 insert
-  let user_token
+  let user_token, user
   try {
     const { snsToken } = req.body
-
     pool = await mysql(dbpool)
-
     const snsTokenCompare = await userData.compareSnsToken(snsToken, pool)
 
     if(snsTokenCompare) {
-      const user = await userData.getUserInfo(snsToken, pool)
-      user_token = await token.generateToken(req.app.get('jwt-secret'), user)
+      user = await userData.getUserInfo(snsToken, pool)
     } else {
       const result = await userData.insertUserToken(snsToken, pool)
-      user_token = await token.generateToken(req.app.get('jwt-secret'), user)
-=======
-  let { user_token } = req.headers
-  const { snsToken } = req.body
-  try {
-    pool = await mysql(dbpool)
-    snsTokenCompare = await userData.compareSnsToken(snsToken, pool)
-    if(!snsTokenCompare) {
-      result = await userData.insertUserToken(snsToken, pool)
-      user = await userData.getUserInfo(snsToken, pool)
->>>>>>> 22ab76d6e3758fcc92490348d84a416a37db2ef8
     }
     user_token = await token.generateToken(req.app.get('jwt-secret'), user)
   } catch (e) {
+    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
