@@ -75,14 +75,13 @@ exports.myPreferenceModify = async (req, res) => {
     const { user_token } = req.headers
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     const userId = userInfo.userID
-
     pool = await mysql(dbpool)
     preferenceModifyResult = await preferenceData.modifyPreferenceInfo(body, userId, pool)
   } catch (e) {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5005,
+      code: 8002,
       message: e,
     })
     return
@@ -90,8 +89,8 @@ exports.myPreferenceModify = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 2000,
-    message: 'success modify preference list'
+    code: 8000,
+    message: 'successful modify preference Info'
   })
 }
 exports.profileModify = async (req, res) => {
@@ -106,7 +105,7 @@ exports.profileModify = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 7001,
+      code: 5003,
       message: e,
     })
     return
@@ -114,8 +113,34 @@ exports.profileModify = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 7000,
+    code: 5000,
     message: 'change profile image success',
   })
 
 }
+
+exports.userNicknameModify = async (req, res) => {
+  let nicknameModifyResult
+  const { user_token } = req.headers
+  const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+  const userId = userInfo.userID
+  const { userNickname } = req.body
+  try {
+    pool = await mysql(dbpool)
+    nicknameModifyResult = await userData.modifyNicknameInfo(userNickname, userId, pool)
+  } catch (e) {
+    res.status(500).send({
+      status: 'fail',
+      code: 5004,
+      message: e,
+    })
+    return
+  }
+  pool.release()
+  res.status(200).send({
+    status: 'success',
+    code: 2000,
+    message: 'success modify user nickname'
+  })
+}
+

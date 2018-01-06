@@ -21,11 +21,12 @@ exports.addUserInfo = async (req,res) => {
     })
     return
   }
+  return
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 8000,
-    message: 'success add user Info'
+    code: 5000,
+    message: 'successful add user Info'
   })
 }
 

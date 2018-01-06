@@ -35,7 +35,7 @@ exports.modifyPreferenceInfo = function (body,userId, connection) {
     const Query = 'UPDATE PREFERENCE SET pre_place=?, pre_mood=?, pre_genre=?, pre_subject=? WHERE user_id = ?'
     connection.query(Query, [ prePlace, preMood, preGenre, preSubject, userId], (err, data) => {
       if (err) {
-        reject('Preference list get ERROR')
+        reject('Preference update query ERROR')
       } else {
         resolve(true)
       }
