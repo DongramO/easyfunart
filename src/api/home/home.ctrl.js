@@ -31,7 +31,6 @@ exports.mainData = async (req, res) => {
     }
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < bottomData.length; j++) {
-        console.log('serserser', userInfo.userID, bottomData[j].user_id)
         if (bottomData[j].theme_id === numSet[i]) {
           if (i === 0) {
             bottomResult.theme1.push({
@@ -81,7 +80,6 @@ exports.mainData = async (req, res) => {
         }
       }
     }
-    console.log(bottomResult)
   }
   catch (e) {
     console.log(e)

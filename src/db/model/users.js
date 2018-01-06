@@ -76,7 +76,6 @@ exports.updateUserInfo = function(userInfo, body, connection){
     return new Promise((resolve, reject) => {
       const { userNickname, userSex, userAge } = body      
       const Query = 'UPDATE USER SET user_nickname= ?, user_sex= ?, user_age= ? WHERE user_id= ?'
-      console.log(userNickname, userSex, userAge, userInfo.userID)
       connection.query(Query,[userNickname, userSex, userAge, userInfo.userID], (err, data) => {
         if (err) {
           reject('user data update ERR')
