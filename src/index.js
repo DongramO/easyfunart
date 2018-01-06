@@ -18,7 +18,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }))
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, '/../','access.log'), {flags: 'a'})
-console.log(accessLogStream)
 var skipOption  = function(req, res)
   {
     console.log(res.statusCode);

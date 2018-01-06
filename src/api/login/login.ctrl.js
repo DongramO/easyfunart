@@ -44,13 +44,12 @@ exports.login = async (req, res) => {
 exports.checkNickname = async (req, res) => {
   let userSelectResult, checkFlag
   const { user_token } = req.headers
-  const userInfo = await token.decodedToken(user_token, req.app.get('jwt-secret'))
-  const userId = userInfo.userID
-  const { userNickname } = req.body
+  const { userNickname } = req.query
   try {
     pool = await mysql(dbpool)
     userSelectResult = await userData.selectUserNickname(userNickname, pool)
   } catch (e) {
+    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',

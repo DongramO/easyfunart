@@ -103,11 +103,13 @@ exports.mainData = async (req, res) => {
 }
 
 exports.serialNum = async (req, res) => {
-  const { serial } = req.query
+  const { serial_num } = req.query
+  console.log(serial_num)
   try {
     pool = await mysql(dbpool)
-    const serialData = await homeList.serialData(serial, pool)
+    serialData = await homeList.serialData(serial_num, pool)
   } catch (e) {
+    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',

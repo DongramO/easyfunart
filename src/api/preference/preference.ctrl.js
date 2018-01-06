@@ -34,6 +34,7 @@ exports.addPreference = async (req, res) => {
   let preferenceInsertResult
   const  { user_token }  = req.headers
   const { body } = req
+  console.log('tt')
   try {
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
