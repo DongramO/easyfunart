@@ -5,7 +5,7 @@ exports.getUserInfo = function getUserInfo(snsToken, connection) {
       if (err) {
         reject('user info select error')
       } else {
-        resolve(result)
+        resolve(result[0])
       }
     })
   })
@@ -77,8 +77,8 @@ exports.selectUserNickname = function selectUserNickname(userNickname,connection
 exports.updateUserInfo = function(userInfo, body, connection){
     return new Promise((resolve, reject) => {
       const { userNickname, userSex, userAge } = body      
-      const Query = 'UPDATE USER SET user_nickname= ?, user_sex= ?, user_age= ? WHERE user_id= ?'
-      connection.query(Query,[userNickname, userSex, userAge, userInfo.userID], (err, data) => {
+      const Query = 'UPDATE USER SET user_nickname= ?, user_sex= ?, user_age= ?, user_level= ? WHERE user_id= ?'
+      connection.query(Query,[userNickname, userSex, userAge, 20, userInfo.userID], (err, data) => {
         if (err) {
           reject('user data update ERR')
         } else {
@@ -86,6 +86,19 @@ exports.updateUserInfo = function(userInfo, body, connection){
         }
       })
     })
+}
+exports.updateLevel = function(level, userInfo, connection){
+  return new Promise((resolve, reject) => {
+    // const { userNickname, userSex, userAge } = body      
+    const Query = 'UPDATE USER SET user_level= ? WHERE user_id= ?'
+    connection.query(Query,[50, userInfo.userID], (err, data) => {
+      if (err) {
+        reject('user data update ERR')
+      } else {
+        resolve(true)
+      }
+    })
+  })
 }
 
 exports.modifyNicknameInfo= function modifyNicknameInfo (userNickname,userId,connection) {

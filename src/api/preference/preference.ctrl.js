@@ -12,6 +12,7 @@ exports.addUserInfo = async (req,res) => {
     pool = await mysql(dbpool)
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     userDataResult = await userData.updateUserInfo(userInfo, body, pool)
+    const updateToken = await tokenData.generateToken(user_token, req.app.get('jwt-secret'), 20)
   } catch (e) {
     pool.release()
     res.status(500).send({
@@ -71,7 +72,11 @@ exports.addPreference = async (req, res) => {
     subject = JSON.stringify(subject)
 
     preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool)   
+    const updateLevel = await userData.updateLevel(50, userInfo, pool)
+    const userToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo, 50)
+    console.log(userInfo)
   } catch (e) {
+    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
@@ -84,6 +89,7 @@ exports.addPreference = async (req, res) => {
   res.status(200).send({
     status: 'success',
     code: 8000,
-    message: 'success add Preference'
+    message: 'success add Preference',
+    userLevel: 50,
   })
 }

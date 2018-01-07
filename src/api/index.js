@@ -25,17 +25,15 @@ router.use('/login', login)
 router.use('/logout',logout)
 router.use('/exhibition', exhibition)
 router.use('/mypage', mypage)
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
+
+
 router.use('/search', search)
 router.use('/docent', docent)
-=======
+
 router.use('/gallery', gallery)
 router.use('/recommend', recommend)
->>>>>>> Stashed changes
+
 
 // router.use('/author', author)
 module.exports = router
