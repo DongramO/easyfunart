@@ -22,6 +22,10 @@ router.use('/login', login)
 router.use('/logout',logout)
 router.use('/exhibition', exhibition)
 router.use('/mypage', mypage)
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 router.use('/search', search)
 router.use('/docent', docent)
 

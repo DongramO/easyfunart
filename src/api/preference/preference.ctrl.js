@@ -21,12 +21,11 @@ exports.addUserInfo = async (req,res) => {
     })
     return
   }
-  return
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 5000,
-    message: 'successful add user Info'
+    code: 8000,
+    message: 'success add user Info'
   })
 }
 
@@ -34,7 +33,6 @@ exports.addPreference = async (req, res) => {
   let preferenceInsertResult
   const  { user_token }  = req.headers
   const { body } = req
-  console.log('tt')
   try {
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
