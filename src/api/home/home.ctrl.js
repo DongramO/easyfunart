@@ -146,16 +146,6 @@ exports.callGrade = async (req, res) => {
     })
   }
   res.status(200).send({
-<<<<<<< Updated upstream
-    status: 'success',
-    code: 4000,
-    data: {
-      ex_id: exId,
-      user_id: userId,
-      review_grade: gradecallResult[0]
-    },
-    message: 'successful call grade info '
-=======
     status : 'success',
     code : 4000,
     message : 'successful call grade info',
@@ -164,7 +154,6 @@ exports.callGrade = async (req, res) => {
       user_id : userId,
       review_grade :gradecallResult[0]
     }
->>>>>>> Stashed changes
   })
 }
 exports.scoreGrade = async (req, res) => {
@@ -225,11 +214,8 @@ exports.like = async (req, res) => {
     status: 'success',
     code: 4000,
     message: 'successful add/delete like',
-<<<<<<< Updated upstream
-=======
     data : {
       likeFlag : likeResult
     }
->>>>>>> Stashed changes
   })
 }

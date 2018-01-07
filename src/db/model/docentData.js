@@ -6,6 +6,7 @@ return new Promise((resolve,reject) => {
             reject(err)
 
         }else {
+            console.log('aaaaa',result)
             resolve(result)
         }
     })

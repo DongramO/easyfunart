@@ -5,10 +5,11 @@ const dbpool = require('../../../config/connection')
 const decodeTokenFunc = require('../../lib/token')
 
 exports.getDocentText = async (req, res) => {
-  let docentTextResult
+  let docentTextResult,dText
   try {
     pool = await mysql(dbpool)
     docentTextResult = await docentData.docentText(req.params.docentId ,pool)
+    dText = docentTextResult[0].docent_text.replace(/\\n/g,"\n")
 
   } catch (e) {
       console.log(e)
@@ -26,7 +27,7 @@ exports.getDocentText = async (req, res) => {
     code: 6000,
     message: 'success get docent Text',
     data: {
-        docentText : docentTextResult[0].docent_text
+        docentText : dText
     }
   })
 }
