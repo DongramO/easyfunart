@@ -16,6 +16,7 @@ exports.generateToken = function generateToken(secret, user) {
       expiresIn: 3600 * 24 * 10 * 10, // 토큰의 유효기간이 100일
     }, (err, token) => {
       if (err) {
+        console.log(err)
         reject('token generate error')
       }
       console.log('token', token)

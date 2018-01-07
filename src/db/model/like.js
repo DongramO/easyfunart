@@ -53,12 +53,14 @@ exports.getLikeCount = function (userId, connection) {
     })
   })
 }
+//ex_id뿌려줌
 exports.getLikeList = function getLikeList(userId, connection) {
   return new Promise((resolve, reject) => {
     const Query =
-     'SELECT ex_title,ex_image FROM EXHIBITION, FAVOR WHERE user_id=? AND FAVOR.ex_id=EXHIBITION.ex_id'
+     'SELECT EXHIBITION.ex_id, ex_title,ex_image FROM EXHIBITION, FAVOR WHERE user_id=? AND FAVOR.ex_id=EXHIBITION.ex_id'
      connection.query(Query, userId, (err, result) => {
       if (err) {
+        console.log(err)
         reject('Like List fail')
       } else {
         resolve(result)

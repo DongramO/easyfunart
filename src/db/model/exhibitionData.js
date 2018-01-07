@@ -100,3 +100,21 @@ exports.getAllExInfo = function (connection) {
     })
   })
 }
+
+exports.getAllExGalleryUserData = function (userId, connection) {
+  return new Promise((resolve, reject) => {
+    const Query = 
+    'select E.ex_id, ex_title, ex_image, ex_average_grade, E.gallery_id, gallery_name, F.user_id, ED.ex_hash_place, ED.ex_hash_mood, ED.ex_hash_genre, ED.ex_hash_subject ' +
+    'from EXHIBITION E ' +
+    'INNER JOIN EXHIBITION_DETAIL ED on E.ex_id = ED.ex_id ' +
+    'INNER JOIN GALLERY G on E.gallery_id = G.gallery_id ' +
+    'LEFT OUTER JOIN FAVOR F on E.ex_id = F.ex_id and F.user_id = ?'
+    connection.query(Query, userId, (err, data) => {
+      if (err) {
+        reject('Exhibition with gallery name & user\'s likeFlag Select Query Error')
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}

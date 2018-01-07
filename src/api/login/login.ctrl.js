@@ -7,7 +7,7 @@ const dbpool = require('../../../config/connection')
 exports.login = async (req, res) => {
   //헤더로 jwt 토큰을 안 줌 => db에서 같은 sns토큰을 가지고 있는 회원 확인
   //1. 그 회원이 있으면 유저id 긁어와서 jwt토큰 발행
-  //2. 그 회원이 없으면 새로 유저정보 insert
+  //2. 그 회원이 없으면 새로 유저정보 insert 후 그 user 정보 가져와서 jwt토큰 발행
   let user_token, user
   try {
     const { snsToken } = req.body
@@ -16,9 +16,11 @@ exports.login = async (req, res) => {
 
     if(snsTokenCompare) {
       user = await userData.getUserInfo(snsToken, pool)
-    } else {
-      const result = await userData.insertUserToken(snsToken, pool)
     }
+    else {
+      const result = await userData.insertUserToken(snsToken, pool)
+      user = await userData.getUserInfo(snsToken, pool)
+    } 
     user_token = await token.generateToken(req.app.get('jwt-secret'), user)
   } catch (e) {
     console.log(e)

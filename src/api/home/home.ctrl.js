@@ -6,6 +6,7 @@ const gradeData = require('../../db/model/grade')
 const tokenData = require('../../lib/token')
 
 exports.mainData = async (req, res) => {
+  
   const { query } = req
   const { user_token } = req.headers
   try {

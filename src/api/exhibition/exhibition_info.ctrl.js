@@ -33,19 +33,30 @@ exports.getExInfo = async (req, res) => {
             user_review_grade = 0
         } else user_review_grade = exUserGradeResult[0].review_grade
 
-        eGenre = exDetailDataResult[0].ex_hash_genre.split(",")
-        eMood = exDetailDataResult[0].ex_hash_mood.split(",")
-        ePlace = exDetailDataResult[0].ex_hash_place.split(",")
-        eSubject = exDetailDataResult[0].ex_hash_subject.split(",")
+        eGenre = JSON.parse(exDetailDataResult[0].ex_hash_genre)
+        eMood = JSON.parse(exDetailDataResult[0].ex_hash_mood)
+        ePlace = JSON.parse(exDetailDataResult[0].ex_hash_place)
+        eSubject = JSON.parse(exDetailDataResult[0].ex_hash_subject)
 
-        ///////만약 사용자가 선택한 취향이 없을 경우 생각하기
         if (preferenceDataResult.length === 0) {
             unSelected = eGenre.concat(eMood).concat(ePlace).concat(eSubject);
+            for(let key in eGenre) {
+                unSelected.push(key)
+            }
+            for(let key in eMood) {
+                unSelected.push(key)
+            }
+            for(let key in ePlace) {
+                unSelected.push(key)
+            }
+            for(let key in eSubject) {
+                unSelected.push(key)
+            }
         } else {
-            uGenre = preferenceDataResult[0].pre_genre.split(",")
-            uMood = preferenceDataResult[0].pre_mood.split(",")
-            uPlace = preferenceDataResult[0].pre_place.split(",")
-            uSubject = preferenceDataResult[0].pre_subject.split(",")
+            uGenre = JSON.parse(preferenceDataResult[0].pre_genre)
+            uMood = JSON.parse(preferenceDataResult[0].pre_mood)
+            uPlace = JSON.parse(preferenceDataResult[0].pre_place)
+            uSubject = JSON.parse(preferenceDataResult[0].pre_subject)
 
             let preCompareResult = preCompare(eGenre, uGenre, selected, unSelected)
             selected = preCompareResult.selected

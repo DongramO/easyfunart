@@ -17,6 +17,7 @@ exports.insertUserToken = function (userToken, connection) {
     const Query = 'INSERT INTO USER(user_sns_token) VALUES (?)'
     connection.query(Query, userToken, (err, result) => {
       if (err) {
+        console.log(err)
         reject('user Token insert Query Error')
       } else {
         resolve(true)
@@ -31,6 +32,7 @@ exports.compareSnsToken = function compareSnsToken (snsToken, connection) {
     const Query = 'select user_id from USER where user_sns_token = ?'
     connection.query(Query, snsToken, (err, data) => {
       if(err) {
+        console.log(err)
         reject('user SNS Token Select Query Error')
       } else {
         console.log(data)

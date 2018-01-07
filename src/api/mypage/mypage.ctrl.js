@@ -12,11 +12,12 @@ const tokenData = require('../../lib/token')
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //프로필사진 수정 추가하기 !!!!!!!!!!!!!
-
+///은영 : 마이페이지 해시태그 보내는 방법 바뀜
 exports.getMypageInfo = async (req, res) => {
   let allResult, userInfoResult, likeCountResult, gradeCountResult, reviewCountResult,
     preferenceResult, likeListResult, reviewListResult
-  let uGenre = [], uMood = [], uPlace = [], uSubject = []
+  let uGenre, uMood, uPlace, uSubject
+  let genreResult = [], moodResult = [], placeResult = [], subjectResult = []
   const { user_token } = req.headers
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
@@ -30,14 +31,30 @@ exports.getMypageInfo = async (req, res) => {
     likeListResult = await likeData.getLikeList(userId, pool)
     reviewListResult = await reviewData.getMyReviewList(userId, pool)
 
-    /////split
-    if (allResult.length !== 0) {
-      uGenre = allResult[0].pre_genre.split(",")
-      uMood = allResult[0].pre_mood.split(",")
-      uPlace = allResult[0].pre_place.split(",")
-      uSubject = allResult[0].pre_subject.split(",")
+    console.log(allResult[0])
+    if (allResult.length != 0) {
+      uGenre = JSON.parse(allResult[0].pre_genre)
+      uMood = JSON.parse(allResult[0].pre_mood)
+      uPlace = JSON.parse(allResult[0].pre_place)
+      uSubject = JSON.parse(allResult[0].pre_subject)
+
+      for(var key in uGenre) {
+        genreResult.push(uGenre[key])
+      }
+      for(var key in uMood) {
+        moodResult.push(uMood[key])
+      }
+      for(var key in uPlace) {
+        placeResult.push(uPlace[key])
+      }
+      for(var key in uSubject) {
+        subjectResult.push(uSubject[key])
+      }
+
+
     }
   } catch (e) {
+    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
@@ -54,10 +71,10 @@ exports.getMypageInfo = async (req, res) => {
       user_data:{
       user_nickname: allResult[0].user_nickname,
       user_profile: allResult[0].user_profile,
-      user_place: uPlace,
-      user_genre: uGenre,
-      user_mood: uMood,
-      user_subject: uSubject
+      user_place: placeResult,
+      user_genre: genreResult,
+      user_mood: moodResult,
+      user_subject: subjectResult
     },
     user_Like_Count: likeCountResult[0].countLike,
     user_Review_Count: reviewCountResult[0].countReview,
@@ -71,12 +88,45 @@ exports.getMypageInfo = async (req, res) => {
 exports.myPreferenceModify = async (req, res) => {
   let preferenceModifyResult
   try {
-    const { body } = req
+    const { prePlace, preMood, preGenre, preSubject  } = req.body
     const { user_token } = req.headers
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     const userId = userInfo.userID
     pool = await mysql(dbpool)
-    preferenceModifyResult = await preferenceData.modifyPreferenceInfo(body, userId, pool)
+    
+    let place_hashtag = prePlace.split(",")
+    let mood_hashtag = preMood.split(",")
+    let genre_hashtag = preGenre.split(",")
+    let subject_hashtag = preSubject.split(",")
+
+    let place = {
+      "북촌" : Number(place_hashtag[0]), "강남" : Number(place_hashtag[1]), "홍대/합정" : Number(place_hashtag[2]),
+       "인사동" : Number(place_hashtag[3]), "이태원" : Number(place_hashtag[4]), "충무로" : Number(place_hashtag[5]), "혜화/대학로" : Number(place_hashtag[6]),
+        "삼청동/서촌" : Number(place_hashtag[7]), "기타" : Number(place_hashtag[8])
+    }
+    let genre = {
+      "동양화" : Number(genre_hashtag[0]), "서양화" : Number(genre_hashtag[1]), "도예" : Number(genre_hashtag[2]), "금속" : Number(genre_hashtag[3]),
+      "보석" : Number(genre_hashtag[4]), "목공" : Number(genre_hashtag[5]), "일러스트" : Number(genre_hashtag[6]), "현대미술" : Number(genre_hashtag[7]),
+      "팝아트" : Number(genre_hashtag[8]), "비디오아트" : Number(genre_hashtag[9]), "풍경화" : Number(genre_hashtag[10]), "카툰" : Number(genre_hashtag[11]),
+      "사진전" : Number(genre_hashtag[12]), "인물화" : Number(genre_hashtag[13])
+    }
+    let mood = {
+      "적막감" : Number(mood_hashtag[0]), "환상적인" : Number(mood_hashtag[1]), "세련된" : Number(mood_hashtag[2]), "편안한" : Number(mood_hashtag[3]),
+      "강렬한" : Number(mood_hashtag[4]), "따뜻한": Number(mood_hashtag[5]), "처절한" : Number(mood_hashtag[6]), "유유자적한" : Number(mood_hashtag[7]),
+      "우아한" : Number(mood_hashtag[8]), "시원한" : Number(mood_hashtag[9]), "사실적인" : Number(mood_hashtag[10])
+    }
+    let subject = {
+      "모험" : Number(subject_hashtag[0]), "코믹" : Number(subject_hashtag[1]), "범죄" : Number(subject_hashtag[2]), "판타지" : Number(subject_hashtag[3]),
+      "픽션" : Number(subject_hashtag[4]), "공포/스릴러" : Number(subject_hashtag[5]), "미스터리" : Number(subject_hashtag[6]),
+      "철학" : Number(subject_hashtag[7]), "정치" : Number(subject_hashtag[8]), "연애" : Number(subject_hashtag[9]), "풍자" : Number(subject_hashtag[10]), "과학" : Number(subject_hashtag[11])
+    }
+
+    place = JSON.stringify(place)
+    mood = JSON.stringify(mood)
+    genre = JSON.stringify(genre)
+    subject = JSON.stringify(subject)
+
+    preferenceModifyResult = await preferenceData.modifyPreferenceInfo(place, mood, genre, subject, userId, pool)
   } catch (e) {
     pool.release()
     res.status(500).send({
