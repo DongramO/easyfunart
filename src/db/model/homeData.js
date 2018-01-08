@@ -1,4 +1,3 @@
-const connection = require('../../lib/dbConnection')
 
 exports.homeData = function homeData(connection) {
   return new Promise((resolve, reject) => {
@@ -12,8 +11,8 @@ exports.homeData = function homeData(connection) {
     })
   })
 }
-////갤러리 이름 나오게 변경함 
-exports.ThemeData = function ThemeData( numSet, connection) {
+////user_id가 다 안나옴~
+exports.ThemeData = function ThemeData(query, numSet, connection) {
   return new Promise((resolve, reject) => {
     const Query = 
     `(select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title

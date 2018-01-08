@@ -38,6 +38,7 @@ exports.getExInfo = async (req, res) => {
         ePlace = JSON.parse(exDetailDataResult[0].ex_hash_place)
         eSubject = JSON.parse(exDetailDataResult[0].ex_hash_subject)
 
+        //사실상 있을 수가 없음 preferenceDataResult의 length가 0인 회원이 없음
         if (preferenceDataResult.length === 0) {
             unSelected = eGenre.concat(eMood).concat(ePlace).concat(eSubject);
             for(let key in eGenre) {

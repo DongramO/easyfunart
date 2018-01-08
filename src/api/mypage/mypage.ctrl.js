@@ -30,7 +30,6 @@ exports.getMypageInfo = async (req, res) => {
     likeListResult = await likeData.getLikeList(userId, pool)
     reviewListResult = await reviewData.getMyReviewList(userId, pool)
 
-    console.log(allResult[0])
     if (allResult.length != 0) {
       uGenre = JSON.parse(allResult[0].pre_genre)
       uMood = JSON.parse(allResult[0].pre_mood)
@@ -164,7 +163,6 @@ exports.profileModify = async (req, res) => {
     code: 1000,
     message: 'change profile image success',
   })
-
 }
 
 exports.userNicknameModify = async (req, res) => {
