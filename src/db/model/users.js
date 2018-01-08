@@ -14,7 +14,7 @@ exports.getUserInfo = function getUserInfo(snsToken, connection) {
 exports.insertUserToken = function (userToken, connection) {
   console.log(userToken)
   return new Promise((resolve, reject) => {
-    const Query = 'INSERT INTO USER(user_sns_token) VALUES (?)'
+    const Query = 'INSERT INTO USER(user_sns_token) VALUES (?, ?)'
     connection.query(Query, userToken, (err, result) => {
       if (err) {
         console.log(err)

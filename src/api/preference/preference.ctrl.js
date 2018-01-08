@@ -5,14 +5,14 @@ const mysql = require('../../lib/dbConnection')
 const tokenData = require('../../lib/token')
 
 exports.addUserInfo = async (req,res) => {
-  let userDataResult
+  let userDataResult, updateToken
   const { body } = req
   const { user_token } = req.headers
   try {
     pool = await mysql(dbpool)
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     userDataResult = await userData.updateUserInfo(userInfo, body, pool)
-    const updateToken = await tokenData.generateToken(user_token, req.app.get('jwt-secret'), 20)
+    updateToken = await tokenData.generateToken(user_token, req.app.get('jwt-secret'), 20)
   } catch (e) {
     pool.release()
     res.status(500).send({
@@ -25,13 +25,17 @@ exports.addUserInfo = async (req,res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 1000,
-    message: 'success add user Info'
+    code: 8000,
+    message: 'success add user Info',
+    data: {
+      token: updateToken,
+      level: 20
+    }
   })
 }
 
 exports.addPreference = async (req, res) => {
-  let preferenceInsertResult
+  let preferenceInsertResult, updateToken
   const  { user_token }  = req.headers
   const { prePlace, preMood, preGenre, preSubject } = req.body //const가 되는지 확인 ==> 안되면 let
   try {
@@ -73,7 +77,7 @@ exports.addPreference = async (req, res) => {
 
     preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool)   
     const updateLevel = await userData.updateLevel(50, userInfo, pool)
-    const userToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo, 50)
+    updateToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo, 50)
     console.log(userInfo)
   } catch (e) {
     console.log(e)
@@ -90,6 +94,9 @@ exports.addPreference = async (req, res) => {
     status: 'success',
     code: 2000,
     message: 'success add Preference',
-    userLevel: 50,
+    data : {
+      token: updateToken,
+      level: 50
+    }
   })
 }
