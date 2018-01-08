@@ -7,12 +7,14 @@ const tokenData = require('../../lib/token')
 
 exports.mainData = async (req, res) => {
   
+  const { query } = req
   const { user_token } = req.headers
+  let userInfo
   try {
     pool = await mysql(dbpool)
     const numSet = [];
     let cnt = 0;
-    const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+    userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     const themeSize = await homeList.themeSize(pool)
 
     while (cnt < 3) {
@@ -23,12 +25,16 @@ exports.mainData = async (req, res) => {
       }
     }
     topData = await homeList.homeData(pool)
-    bottomData = await homeList.ThemeData(numSet, pool)
+    bottomData = await homeList.ThemeData(query, numSet, pool)
     bottomResult = {
       theme1: [],
       theme2: [],
       theme3: []
     }
+    const exList = []
+    for (let j = 0; j < bottomData.length; j++) exList.push(bottomData[j].ex_id)
+    const favorData = await likeData.getFavorList(userInfo.userID, pool)
+    console.log('userid', userInfo.userID)
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < bottomData.length; j++) {
         if (bottomData[j].theme_id === numSet[i]) {
@@ -45,7 +51,11 @@ exports.mainData = async (req, res) => {
               gallery_name: bottomData[j].gallery_name,
               likeFlag: 0
             })
-            if (bottomData[j].user_id == userInfo.userID) bottomResult.theme1[j].likeFlag = 1
+            // exList =  theme에 뿌려줄 전시목록
+          for(let m=0; m<favorData.length; m++)
+            if (bottomData[j].ex_id === favorData[m].ex_id) {
+              bottomResult.theme1[j].likeFlag = 1
+            } 
           }
           if (i === 1) {
             bottomResult.theme2.push({
@@ -60,7 +70,10 @@ exports.mainData = async (req, res) => {
               gallery_name: bottomData[j].gallery_name,
               likeFlag: 0
             })
-            if (bottomData[j].user_id === userInfo.userID) bottomResult.theme2[j].likeFlag = 1
+          for(let m=0; m<favorData.length; m++)
+            if (bottomData[j].ex_id === favorData[m].ex_id) {
+              bottomResult.theme2[j].likeFlag = 1
+            } 
           }
           if (i === 2) {
             bottomResult.theme3.push({
@@ -75,26 +88,31 @@ exports.mainData = async (req, res) => {
               gallery_name: bottomData[j].gallery_name,
               likeFlag: 0
             })
-            if (bottomData[j].user_id === userInfo.userID) bottomResult.theme3[j].likeFlag = 1
+          for(let m=0; m<favorData.length; m++)
+            if (bottomData[j].ex_id === favorData[m].ex_id) {
+              bottomResult.theme3[j].likeFlag = 1
+            } 
           }
         }
       }
     }
+    console.log(exList)
   }
   catch (e) {
     console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 3001,
+      code: 2001,
       message: e,
     })
+    return
   }
   pool.release()
   res.status(200).send({
     status: 'succes',
-    code: 3000,
-    message: 'success get main home data',
+    code: 2000,
+    message: 'success add Preference',
     data: {
       topData,
       bottomResult,
@@ -104,7 +122,7 @@ exports.mainData = async (req, res) => {
 
 exports.serialNum = async (req, res) => {
   const { serial_num } = req.query
-
+  console.log(serial_num)
   try {
     pool = await mysql(dbpool)
     serialData = await homeList.serialData(serial_num, pool)
@@ -113,15 +131,15 @@ exports.serialNum = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 3002,
+      code: 2002,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 3000,
-    message: 'success get serial data',
+    code: 2000,
+    message: 'success add Preference',
     data: {
       serialData,
     },
@@ -141,13 +159,13 @@ exports.callGrade = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5003,
+      code: 4003,
       message: e
     })
   }
   res.status(200).send({
     status : 'success',
-    code : 5000,
+    code : 4000,
     message : 'successful call grade info',
     data : {
       ex_id : exId,
@@ -175,14 +193,14 @@ exports.scoreGrade = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5004,
+      code: 4001,
       message: e
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 5000,
+    code: 4000,
     message: 'successful add/modify review grade'
   })
 }
@@ -205,14 +223,14 @@ exports.like = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5002,
+      code: 4002,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 5000,
+    code: 4000,
     message: 'successful add/delete like',
     data : {
       likeFlag : likeResult
