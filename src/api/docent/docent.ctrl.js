@@ -52,7 +52,7 @@ exports.getBeforeDocent = async (req,res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 6005,
+      code: 6004,
       message: e,
     })
     return
@@ -84,7 +84,7 @@ exports.getDocentText = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 6004,
+      code: 6005,
       message: e,
     })
     return
@@ -110,7 +110,7 @@ exports.getDocentPlace = async (req, res) => {
       pool.release()
       res.status(500).send({
         status: 'fail',
-        code: 6005,
+        code: 6006,
         message: e,
       })
       return

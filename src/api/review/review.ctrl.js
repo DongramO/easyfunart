@@ -8,13 +8,13 @@ const dbpool = require('../../../config/connection')
 const jwt = require('../../lib/token')
 
 
-/* 리뷰 쓴 날짜도 받아오고 관람날짜도 / 리뷰 부분 다시 수정하기 */
+/* 관람날짜 받아오기  / 리뷰 부분 다시 수정하기 */
 
 
 exports.writeReview = async (req, res) => {
   
   const { body, file } = req
-  const { exId, reviewContent,reviewGrade } = body
+  const { exId, reviewContent,reviewGrade,reviewWatchDate } = body
   const { user_token } = req.headers
   try {
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
@@ -29,7 +29,7 @@ exports.writeReview = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 7001,
+      code: 5006,
       message: 'write review select fail',
     })
     return
@@ -37,7 +37,7 @@ exports.writeReview = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 7000,
+    code: 5000,
     message: 'write review select success',
   })
 }
@@ -69,7 +69,7 @@ exports.getReview = async (req, res) => {
 
 exports.updateReivew = async (req, res) => {
   const { body, file } = req
-  const { reviewId, exId, reviewContent,reviewGrade } = body
+  const { reviewId, exId, reviewContent,reviewGrade,reviewWatchDate } = body
   const { user_token } = req.headers
   try {
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
@@ -83,7 +83,7 @@ exports.updateReivew = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 7003,
+      code: 5007,
       message: 'update review fail',
     })
     return
@@ -91,7 +91,7 @@ exports.updateReivew = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 7000,
+    code: 5000,
     message: 'update review success',
   })
 }
@@ -108,16 +108,16 @@ exports.deleteReview = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 7004,
+      code: 5008,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 7000,
+    code: 5000,
     message: 'Review delete success',
-  })
+  })  
 }
 
 
