@@ -7,7 +7,6 @@ const tokenData = require('../../lib/token')
 
 exports.mainData = async (req, res) => {
   
-  const { query } = req
   const { user_token } = req.headers
   try {
     pool = await mysql(dbpool)
@@ -24,7 +23,7 @@ exports.mainData = async (req, res) => {
       }
     }
     topData = await homeList.homeData(pool)
-    bottomData = await homeList.ThemeData(query, numSet, pool)
+    bottomData = await homeList.ThemeData(numSet, pool)
     bottomResult = {
       theme1: [],
       theme2: [],
@@ -87,15 +86,15 @@ exports.mainData = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 2001,
+      code: 3001,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'succes',
-    code: 2000,
-    message: 'success add Preference',
+    code: 3000,
+    message: 'success get main home data',
     data: {
       topData,
       bottomResult,
@@ -105,7 +104,7 @@ exports.mainData = async (req, res) => {
 
 exports.serialNum = async (req, res) => {
   const { serial_num } = req.query
-  console.log(serial_num)
+
   try {
     pool = await mysql(dbpool)
     serialData = await homeList.serialData(serial_num, pool)
@@ -114,15 +113,15 @@ exports.serialNum = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 2002,
+      code: 3002,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 2000,
-    message: 'success add Preference',
+    code: 3000,
+    message: 'success get serial data',
     data: {
       serialData,
     },
@@ -142,13 +141,13 @@ exports.callGrade = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 4003,
+      code: 5003,
       message: e
     })
   }
   res.status(200).send({
     status : 'success',
-    code : 4000,
+    code : 5000,
     message : 'successful call grade info',
     data : {
       ex_id : exId,
@@ -176,14 +175,14 @@ exports.scoreGrade = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 4001,
+      code: 5004,
       message: e
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 4000,
+    code: 5000,
     message: 'successful add/modify review grade'
   })
 }
@@ -206,14 +205,14 @@ exports.like = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 4002,
+      code: 5002,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 4000,
+    code: 5000,
     message: 'successful add/delete like',
     data : {
       likeFlag : likeResult

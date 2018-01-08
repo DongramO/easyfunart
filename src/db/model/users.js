@@ -59,15 +59,15 @@ exports.deleteToken= function deleteToken(userId,connection){
 }
 exports.selectUserNickname = function selectUserNickname(userNickname,connection){
   return new Promise((resolve, reject) => {
-    const Query ='SELECT count(*) AS Cnic FROM USER WHERE user_nickname = ?' 
+    const Query ='SELECT * FROM USER WHERE user_nickname = ?' 
     connection.query(Query,userNickname,(err,data) => {
       if (err) {
         reject('user nickname select query error')
       } else {
-        if(data.length ===0){
+        if(data.length ===0){  //중복하지 않으면 1
           resolve(1)
         } else{
-        resolve(0)
+        resolve(0)      //중복하면 0
         }
       }
     })

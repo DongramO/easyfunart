@@ -40,3 +40,22 @@ exports.guideList = function guideList(exId, connection) {
     })
   })
 }
+
+exports.trackList = function trackList( track,exId, connection) {
+  return new Promise((resolve, reject) => {
+    const Query = 'SELECT docent_title,docent_audio,docent_track, ex_id  from DOCENT where docent_track = ? AND ex_id =?'
+    
+    connection.query(Query, [track, exId], (err, result) => {
+      if (err) {
+        reject('track select error')
+       }else{
+         if(result.length===0){
+           reject('final track')
+          
+         }else{
+        resolve(result)
+         }
+      }
+    })
+  })
+}

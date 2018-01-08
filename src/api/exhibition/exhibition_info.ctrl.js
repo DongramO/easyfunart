@@ -76,14 +76,14 @@ exports.getExInfo = async (req, res) => {
         connection.release()
         res.status(500).send({
             status: "fail",
-            code: 3001,
+            code: 4001,
             message: e
         })
     }
     connection.release()
     res.status(200).send({
         status: "success",
-        code: 3000,
+        code: 4000,
         message: "successfully load exhibiton detail data",
         data: {
             userInfo: {
@@ -144,14 +144,14 @@ exports.getExReview = async (req, res) => {
         connection.release()
         res.status(500).send({
             status: "fail",
-            code: 3004,
+            code: 4003,
             message: e
         })
     }
     connection.release()
     res.status(200).send({
         status: "success",
-        code: 3000,
+        code: 4000,
         message: "successfully load review detail data",
         data: {
             reviewGraph: {

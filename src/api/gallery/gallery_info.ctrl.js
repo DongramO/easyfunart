@@ -12,14 +12,14 @@ exports.getGalleryInfo = async (req, res) => {
         connection.release()
         res.status(500).send({
             status: "fail",
-            code: 3003,
+            code: 4002,
             message: e
         })
     }
     connection.release()
     res.status(200).send({
         status: "success",
-        code: 3000,
+        code: 4000,
         message: "successfully load gallery data",
         data: {
             period: exGalleryDataResult[0].gallery_period,

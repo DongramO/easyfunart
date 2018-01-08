@@ -21,7 +21,6 @@ exports.getMypageInfo = async (req, res) => {
   const { user_token } = req.headers
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
-  // const { userId } = req.query
   try {
     pool = await mysql(dbpool)
     allResult = await mypageData.getinfo(userId, pool)
@@ -58,14 +57,14 @@ exports.getMypageInfo = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5006,
+      code: 1001,
       message: e,
     })
   }
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 5000,
+    code: 1001,
     message: 'success get Mypage data',
     data: {
       user_data:{
@@ -125,13 +124,12 @@ exports.myPreferenceModify = async (req, res) => {
     mood = JSON.stringify(mood)
     genre = JSON.stringify(genre)
     subject = JSON.stringify(subject)
-
     preferenceModifyResult = await preferenceData.modifyPreferenceInfo(place, mood, genre, subject, userId, pool)
   } catch (e) {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 8002,
+      code: 2002,
       message: e,
     })
     return
@@ -139,7 +137,7 @@ exports.myPreferenceModify = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 8000,
+    code: 2000,
     message: 'successful modify preference Info'
   })
 }
@@ -155,7 +153,7 @@ exports.profileModify = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5003,
+      code: 1005,
       message: e,
     })
     return
@@ -163,7 +161,7 @@ exports.profileModify = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 5000,
+    code: 1000,
     message: 'change profile image success',
   })
 
@@ -181,7 +179,7 @@ exports.userNicknameModify = async (req, res) => {
   } catch (e) {
     res.status(500).send({
       status: 'fail',
-      code: 5004,
+      code: 1006,
       message: e,
     })
     return
@@ -189,7 +187,7 @@ exports.userNicknameModify = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 2000,
+    code: 1000,
     message: 'success modify user nickname'
   })
 }

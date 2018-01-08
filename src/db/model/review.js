@@ -7,7 +7,7 @@ const moment = require('moment')
 exports.writeReview = function writeReview(body, file, userId, connection) {
 
   return new Promise((resolve, reject) => {
-    const Query = 'INSERT INTO REVIEW(review_grade, review_content, review_image, review_date, ex_id, user_id) values(?,?,?,?,?)'
+    const Query = 'INSERT INTO REVIEW(review_grade, review_content, review_image, review_date, ex_id, user_id) values(?,?,?,?,?,?)'
     connection.query(Query, [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYY-MM-DD'),  body.exId, userId], (err, result) => {
       if (err) {
         reject(err)
@@ -34,8 +34,8 @@ exports.getReview = function getReview(query, connection) {
 
 exports.updateReview = function updateReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'UPDATE REIVEW SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? WHERE review_id = ? AND user_id = ?'
-    connection.query(Query, [Number(body.reviewGrade), moment().format('YYYY-MM-DD'), body.reviewContent, file.location,  body.exId, userId], (err, result) => {
+    const Query = 'UPDATE REVIEW SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? WHERE review_id = ? AND user_id = ?'
+    connection.query(Query, [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYY-MM-DD'),   body.reviewId, userId], (err, result) => {
       if (err) {
         reject(err)
       } else {

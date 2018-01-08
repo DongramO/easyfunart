@@ -1,3 +1,19 @@
+// exports.PreviousDocent  =function(exId,track,connection){
+//     //ㅁ르겠따~~~~~~~~~~~~
+// return new Promise((resolve,seject) => {
+//     let nextTrack = track +1
+//     console.log(docentId, exId, track) 
+//     const Query = 'SELECT docent_id, docent_title,docent_audio,docent_track FROM DOCENT WHERE docent_track = ? AND ex_id = ?'
+//     connection.query(Query,[nextTrack,exId],(err,result) => {
+//         if(err){
+//             reject(err)
+//         }else {
+//                 resolve(result)
+//         }
+//     })
+// })
+// }
+
 exports.docentText = function(docentId,connection){
 return new Promise((resolve,reject) => {
     const Query = 'SELECT docent_text FROM DOCENT WHERE docent_id = ?'

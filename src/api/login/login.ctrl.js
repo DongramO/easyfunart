@@ -42,18 +42,16 @@ exports.login = async (req, res) => {
 
 exports.checkNickname = async (req, res) => {
   let userSelectResult, checkFlag
-  const { user_token } = req.headers
+  //const { user_token } = req.headers
   const { userNickname } = req.query
   try {
-    // const userInfo = await token.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
     userSelectResult = await userData.selectUserNickname(userNickname, pool)
   } catch (e) {
-    console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 5001,
+      code: 1002,
       message: e,
     })
     return
@@ -61,7 +59,7 @@ exports.checkNickname = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 5000,
+    code: 1000,
     message: 'success check Nickname',
     data: {
       checkFlag: userSelectResult
