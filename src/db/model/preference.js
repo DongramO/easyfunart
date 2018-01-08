@@ -41,6 +41,21 @@ exports.modifyPreferenceInfo = function (prePlace, preMood, preGenre, preSubject
 }
 
 
+exports.modifyUserPreInfo = function (preSex, preAge, userId, connection) {
+  //mypage.js 
+  return new Promise((resolve, reject) => {
+    const Query = 'UPDATE USER SET user_sex = ?, user_age = ? WHERE user_id = ?'
+    connection.query(Query, [ preSex, preAge, userId], (err, data) => {
+      if (err) {
+        reject('User Age, Sex update query ERROR')
+      } else {
+        resolve(true)
+      }
+    })
+  })
+}
+
+
 //맞춤 추천 알고리즘
 //'{"합정" : 1, "익선동" : 0, '강남' : 0}'
 // preference 키 값 뽑아 내고, 

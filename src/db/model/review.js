@@ -119,7 +119,7 @@ exports.getReviewCount = function getReviewCount(userId, connection) {
 exports.getMyReviewList = function getMyReviewList(userId, connection) {
   //mypage.js
   return new Promise((resolve, reject) => {
-    const Query ='SELECT user_nickname,review_grade,review_content,review_date,review_watch_date,ex_title FROM USER,REVIEW,EXHIBITION WHERE REVIEW.user_id=? and REVIEW.user_id=USER.user_id and EXHIBITION.ex_id=REVIEW.ex_id AND review_content is NOT NULL'
+    const Query ='SELECT user_nickname,review_grade,review_content,review_date,review_watch_date,review_image,ex_title FROM USER,REVIEW,EXHIBITION WHERE REVIEW.user_id=? and REVIEW.user_id=USER.user_id and EXHIBITION.ex_id=REVIEW.ex_id AND review_content is NOT NULL'
      connection.query(Query, userId, (err, result) => {
       if (err) {
         reject('My Review List fail')

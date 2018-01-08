@@ -10,7 +10,6 @@ exports.getinfo = function (userId, connection) {
         } else {
           resolve(data)
         }
-        
       })
     })
   }
