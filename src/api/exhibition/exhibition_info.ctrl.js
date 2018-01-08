@@ -161,7 +161,7 @@ exports.getExReview = async (req, res) => {
                 grade_2: g_2,
                 grade_3: g_3,
                 grade_4: g_4,
-                grade_5: g_5,
+                grade_5: g_5
             },
             latestReview: exReviewDataResult
         }

@@ -81,7 +81,6 @@ exports.getExScore = (exId, connection) => {
         reject(err)
       } else {
         resolve(result[0])
-        console.log('tt')
       }
     })
   })
