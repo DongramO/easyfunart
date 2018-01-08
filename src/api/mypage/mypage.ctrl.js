@@ -24,20 +24,12 @@ exports.getMypageInfo = async (req, res) => {
   try {
     pool = await mysql(dbpool)
     allResult = await mypageData.getinfo(userId, pool)
-    console.log(userInfo)
-    console.log(1)
     likeCountResult = await likeData.getLikeCount(userId, pool)
-    console.log(2)
     gradeCountResult = await gradeData.getGradeCount(userId, pool)
-    console.log(3)
     reviewCountResult = await reviewData.getReviewCount(userId, pool)
-    console.log(4)
     likeListResult = await likeData.getLikeList(userId, pool)
-    console.log(5)
     reviewListResult = await reviewData.getMyReviewList(userId, pool)
-    console.log(6)
 
-    console.log(allResult)
     if (allResult.length != 0) {
       uGenre = JSON.parse(allResult[0].pre_genre)
       uMood = JSON.parse(allResult[0].pre_mood)

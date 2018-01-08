@@ -12,7 +12,6 @@ exports.getUserInfo = function getUserInfo(snsToken, connection) {
 }
 
 exports.insertUserToken = function (userToken, connection) {
-  console.log(userToken)
   return new Promise((resolve, reject) => {
     const Query = 'INSERT INTO USER(user_sns_token) VALUES (?, ?)'
     connection.query(Query, userToken, (err, result) => {
@@ -117,7 +116,7 @@ exports.modifyNicknameInfo= function modifyNicknameInfo (userNickname,userId,con
 exports.getMypageUserInfo = function getMypageUserInfo(userId,connection) {
   //mypage.js 
   return new Promise((resolve, reject) => {
-    const Query = 'SELECT user_nickname, user_profile FROM USER WHERE user_id =?'
+    const Query = 'SELECT user_nickname, user_profile, user_level FROM USER WHERE user_id =?'
     connection.query(Query,userId, (err, result) => {
       if (err) {
         reject('user info select error')

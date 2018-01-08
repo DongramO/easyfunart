@@ -77,7 +77,7 @@ exports.addPreference = async (req, res) => {
     preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool)   
     const updateLevel = await userData.updateLevel(50, userInfo, pool)
     updateToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo, 50)
-    console.log(userInfo)
+
   } catch (e) {
     console.log(e)
     pool.release()

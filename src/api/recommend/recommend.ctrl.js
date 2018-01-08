@@ -18,21 +18,23 @@ exports.getRecommendData = async (req, res) => {
 
         let userPreference = await preferenceData.getPreferenceInfo(userId, connection)
         let exData = await exhibitionData.getAllExGalleryUserData(userId, connection)
-        
-        recommendAlgoResult = recommendAlgorithm(exData, userPreference[0])
-        
-        for(let i in recommendAlgoResult) {
-            recommendResult.push({
-                ex_id : recommendAlgoResult[i].exInfo.ex_id,
-                ex_title : recommendAlgoResult[i].exInfo.ex_title,
-                ex_image : recommendAlgoResult[i].exInfo.ex_image,
-                ex_average_grade : recommendAlgoResult[i].exInfo.ex_average_grade,
-                gallery_id : recommendAlgoResult[i].exInfo.gallery_id,
-                gallery_name : recommendAlgoResult[i].exInfo.gallery_name,
-                likeFlag : 0
-            })
-            if(recommendAlgoResult[i].exInfo.user_id === userId) {
-                recommendResult[i].likeFlag = 1
+
+        if (userPreference.length != 0) {
+            recommendAlgoResult = recommendAlgorithm(exData, userPreference[0])
+
+            for (let i in recommendAlgoResult) {
+                recommendResult.push({
+                    ex_id: recommendAlgoResult[i].exInfo.ex_id,
+                    ex_title: recommendAlgoResult[i].exInfo.ex_title,
+                    ex_image: recommendAlgoResult[i].exInfo.ex_image,
+                    ex_average_grade: recommendAlgoResult[i].exInfo.ex_average_grade,
+                    gallery_id: recommendAlgoResult[i].exInfo.gallery_id,
+                    gallery_name: recommendAlgoResult[i].exInfo.gallery_name,
+                    likeFlag: 0
+                })
+                if (recommendAlgoResult[i].exInfo.user_id === userId) {
+                    recommendResult[i].likeFlag = 1
+                }
             }
         }
 

@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 
 
 exports.generateToken = function generateToken(secret, user, level) {
-  console.log(user)
   return new Promise((resolve, reject) => {
     const payload = {
       userID: user.user_id,
