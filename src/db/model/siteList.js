@@ -1,7 +1,4 @@
-// const mysql = require('../../../config/connection')
-// const upload = require('../../lib/s3Connect')
 
-////이거 필요없음
 exports.siteList = function siteList(latitude, longitude, connection) {
   return new Promise((resolve, reject) => {
     const Query = 'SELECT * FROM GALLERY where gallery_longitude=? and gallery_longitude=?'
@@ -43,7 +40,7 @@ exports.guideList = function guideList(exId, connection) {
 
 exports.trackList = function trackList( track,exId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'SELECT docent_title,docent_audio,docent_track, ex_id  from DOCENT where docent_track = ? AND ex_id =?'
+    const Query = 'SELECT docent_title,docent_audio,docent_track, ex_id from DOCENT where docent_track = ? AND ex_id =?'
     
     connection.query(Query, [track, exId], (err, result) => {
       if (err) {

@@ -83,6 +83,7 @@ exports.autoLoginCheck = async (req, res) => {
     const decodedTokenResult = await token.decodedToken(user_token, req.app.get('jwt-secret'))
     userDataResult = await userData.getMypageUserInfo(decodedTokenResult.userID, pool)
 
+    console.log(decodedTokenResult.userID)
   } catch (e) {
     pool.release()
         res.status(500).send({
