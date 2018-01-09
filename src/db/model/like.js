@@ -70,6 +70,7 @@ exports.getLikeList = function getLikeList(userId, connection) {
 }
 
 exports.getFavorList = function getFavorList(userId, connection) {
+  console.log('userid', userId)
   return new Promise((resolve, reject) => {
     const Query =
      'SELECT ex_id FROM FAVOR WHERE user_id=?'

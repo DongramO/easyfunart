@@ -12,7 +12,7 @@ exports.addUserInfo = async (req,res) => {
     pool = await mysql(dbpool)
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     userDataResult = await userData.updateUserInfo(userInfo, body, pool)
-    updateToken = await tokenData.generateToken( req.app.get('jwt-secret'),userInfo, 20)
+    updateToken = await tokenData.generateToken( req.app.get('jwt-secret'),userInfo.userID, 20)
   } catch (e) {
     pool.release()
     res.status(500).send({
@@ -76,7 +76,7 @@ exports.addPreference = async (req, res) => {
 
     preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool )   
     const updateLevel = await userData.updateLevel(50, userInfo, pool)
-    updateToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo, 50)
+    updateToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo.userID, 50)
 
   } catch (e) {
     console.log(e)

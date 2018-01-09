@@ -1,10 +1,12 @@
 exports.getUserInfo = function getUserInfo(snsToken, connection) {
   return new Promise((resolve, reject) => {
+    console.log('snsToken', snsToken)
     const Query = 'SELECT * FROM USER where user_sns_token = ?'
     connection.query(Query, [snsToken], (err, result) => {
       if (err) {
         reject('user info select error')
       } else {
+        console.log(result)
         resolve(result[0])
       }
     })

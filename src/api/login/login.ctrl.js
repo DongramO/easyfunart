@@ -16,10 +16,11 @@ exports.login = async (req, res) => {
       const result = await userData.insertUserToken(snsToken, pool)
     }
     user = await userData.getUserInfo(snsToken, pool)
+    console.log('user', user)
     //로그아웃을 하고 다시 같은 아이디로 로그인 했을 때 계속 10을 준다면 그 사용자는 닉네임 설정하고, 해야되니까 
     //db에서 값을 들고 온 다음에 그게 10보다 큰 값이면 그 값을 send 해준다.
     //만약 기존의 회원이라면 ..? 10이아니라 user에서 가져온 level을 사용
-    user_token = await token.generateToken(req.app.get('jwt-secret'), user, user.user_level)
+    user_token = await token.generateToken(req.app.get('jwt-secret'), user.user_id, user.user_level)
   } catch (e) {
     console.log(e)
     pool.release()

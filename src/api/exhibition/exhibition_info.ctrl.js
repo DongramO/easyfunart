@@ -40,7 +40,7 @@ exports.getExInfo = async (req, res) => {
 
         //사실상 있을 수가 없음 preferenceDataResult의 length가 0인 회원이 없음
         if (preferenceDataResult.length === 0) {
-            unSelected = eGenre.concat(eMood).concat(ePlace).concat(eSubject);
+            // unSelected = eGenre.concat(eMood).concat(ePlace).concat(eSubject);
             for(let key in eGenre) {
                 unSelected.push(key)
             }
@@ -74,12 +74,14 @@ exports.getExInfo = async (req, res) => {
         }
 
     } catch (e) {
+        console.log(e)
         connection.release()
         res.status(500).send({
             status: "fail",
             code: 4001,
             message: e
         })
+        return
     }
     connection.release()
     res.status(200).send({

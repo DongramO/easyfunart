@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
 
 
-exports.generateToken = function generateToken(secret, user, level) {
+exports.generateToken = function generateToken(secret, userID, level) {
   return new Promise((resolve, reject) => {
     const payload = {
-      userID: user.userID,
+      userID: userID,
       userLevel: level
     }
     const token = jwt.sign(payload, secret, {
