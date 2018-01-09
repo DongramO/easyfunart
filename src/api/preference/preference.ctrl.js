@@ -11,8 +11,9 @@ exports.addUserInfo = async (req,res) => {
   try {
     pool = await mysql(dbpool)
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+    let userId = userInfo.userID
     userDataResult = await userData.updateUserInfo(userInfo, body, pool)
-    updateToken = await tokenData.generateToken( req.app.get('jwt-secret'),userInfo.userID, 20)
+    updateToken = await tokenData.generateToken(req.app.get('jwt-secret'), userId, 20)
   } catch (e) {
     pool.release()
     res.status(500).send({
