@@ -28,6 +28,7 @@ exports.favorList = function favorList(userId, connection) {
   })
 }
 
+//트랙리스트 가져오기 
 exports.guideList = function guideList(exId, connection) {
   return new Promise((resolve, reject) => {
     const Query = 'SELECT DO.docent_id, DO.docent_floor, DO.docent_title, DO.docent_track FROM DOCENT as DO where ex_id = ?'
@@ -41,9 +42,10 @@ exports.guideList = function guideList(exId, connection) {
   })
 }
 
+//도슨트 정보 가져오기 
 exports.trackList = function trackList( track,exId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'SELECT docent_title,docent_audio,docent_track, ex_id  from DOCENT where docent_track = ? AND ex_id =?'
+    const Query = 'SELECT DO.docent_title,DO.docent_audio,DO.docent_track,EX.ex_id,EX.ex_title as ex_title from DOCENT DO,EXHIBITION EX where docent_track = ? AND EX.ex_id = ? AND EX.ex_id =DO.ex_id'
     
     connection.query(Query, [track, exId], (err, result) => {
       if (err) {
