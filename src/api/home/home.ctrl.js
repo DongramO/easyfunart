@@ -50,10 +50,10 @@ exports.mainData = async (req, res) => {
               likeFlag: 0
             })
             // exList =  theme에 뿌려줄 전시목록
-          for(let m=0; m<favorData.length; m++)
-            if (bottomData[j].ex_id === favorData[m].ex_id) {
-              bottomResult.theme1[j].likeFlag = 1
-            } 
+            for(let m=0; m<favorData.length; m++)
+              if (bottomData[j].ex_id === favorData[m].ex_id ) {
+                bottomResult.theme1[bottomResult.theme1.length-1].likeFlag = 1
+              } 
           }
           if (i === 1) {
             bottomResult.theme2.push({
@@ -70,7 +70,7 @@ exports.mainData = async (req, res) => {
             })
           for(let m=0; m<favorData.length; m++)
             if (bottomData[j].ex_id === favorData[m].ex_id) {
-              bottomResult.theme2[j].likeFlag = 1
+              bottomResult.theme2[bottomResult.theme2.length-1].likeFlag = 1
             } 
           }
           if (i === 2) {
@@ -88,7 +88,7 @@ exports.mainData = async (req, res) => {
             })
           for(let m=0; m<favorData.length; m++)
             if (bottomData[j].ex_id === favorData[m].ex_id) {
-              bottomResult.theme3[j].likeFlag = 1
+              bottomResult.theme3[bottomResult.theme3.length-1].likeFlag = 1
             } 
           }
         }
