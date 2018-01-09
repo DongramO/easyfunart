@@ -4,7 +4,7 @@ const docentCtrl = require('./docent.ctrl')
 
 const router = express.Router()
 
-
+router.get('/',docentCtrl.getDocentMain)
 router.get('/next',docentCtrl.getNextDocent)
 router.get('/before',docentCtrl.getBeforeDocent)
 router.get('/:docentId/text', docentCtrl.getDocentText)

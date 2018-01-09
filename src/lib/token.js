@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 exports.generateToken = function generateToken(secret, user, level) {
   return new Promise((resolve, reject) => {
     const payload = {
-      userID: user.user_id,
+      userID: user.userID,
       userLevel: level
     }
     const token = jwt.sign(payload, secret, {
@@ -30,6 +30,7 @@ exports.decodedToken = function decodedToken(token, secret) {
         else if(err.message === 'invalid token') reject('invalid token')
       } else {
         resolve(decoded)
+        console.log('디코드',decoded)
       }
     })
     // reject(e)

@@ -55,7 +55,6 @@ exports.modifyUserPreInfo = function (preSex, preAge, userId, connection) {
   })
 }
 
-
 //맞춤 추천 알고리즘
 //'{"합정" : 1, "익선동" : 0, '강남' : 0}'
 // preference 키 값 뽑아 내고, 

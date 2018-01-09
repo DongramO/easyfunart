@@ -1,6 +1,5 @@
 const userData = require('../../db/model/users')
 const token = require('../../lib/token')
-
 const mysql = require('../../lib/dbConnection')
 const dbpool = require('../../../config/connection')
 

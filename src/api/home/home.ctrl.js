@@ -7,7 +7,6 @@ const tokenData = require('../../lib/token')
 
 exports.mainData = async (req, res) => {
   
-  const { query } = req
   const { user_token } = req.headers
   let userInfo
   try {
@@ -25,7 +24,7 @@ exports.mainData = async (req, res) => {
       }
     }
     topData = await homeList.homeData(pool)
-    bottomData = await homeList.ThemeData(query, numSet, pool)
+    bottomData = await homeList.ThemeData(numSet, pool)
     bottomResult = {
       theme1: [],
       theme2: [],
@@ -34,7 +33,6 @@ exports.mainData = async (req, res) => {
     const exList = []
     for (let j = 0; j < bottomData.length; j++) exList.push(bottomData[j].ex_id)
     const favorData = await likeData.getFavorList(userInfo.userID, pool)
-    console.log('userid', userInfo.userID)
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < bottomData.length; j++) {
         if (bottomData[j].theme_id === numSet[i]) {

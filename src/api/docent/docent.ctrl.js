@@ -1,25 +1,25 @@
 
 const docentData = require('../../db/model/docentData')
 const trackList = require('../../db/model/siteList')
-
 const mysql = require('../../lib/dbConnection')
 const dbpool = require('../../../config/connection')
 const decodeTokenFunc = require('../../lib/token')
 
-exports.getNextDocent = async (req, res) => {
-  let ListResult
+ exports.getDocentMain = async (req, res) =>{
+
+  let DataResult
   try { 
     const { docentTrack, exId } = req.query
     pool = await mysql(dbpool)
-    const nextTrack =Number(docentTrack)+1
-    ListResult = await trackList.trackList(nextTrack, exId, pool) //ex_id가 같고 트랙+1 인 데이터 찾기 
-    console.log(ListResult)
+    DataResult = await trackList.trackList(docentTrack, exId, pool) 
+    console.log(docentTrack,exId)
+    console.log(DataResult)
     
   } catch (e) {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 6005,
+      code: 6001,
       message: e,
     })
     return
@@ -28,25 +28,26 @@ exports.getNextDocent = async (req, res) => {
   res.status(200).send({
     status: 'success',
     code: 6000,
-    message: 'success get  next docent ',
+    message: 'success get docent info ',
     data: {
-      docent_title : ListResult[0].docent_title,
-       docent_audio : ListResult[0].docent_audio,
-       docent_track : ListResult[0].docent_track,
-       ex_id : ListResult[0].ex_id
-      
+      ex_id : DataResult[0].ex_id,
+      ex_title : DataResult[0].ex_title,  
+      docent_title : DataResult[0].docent_title,
+      docent_audio : DataResult[0].docent_audio,
+      docent_track : DataResult[0].docent_track
     }
   })
-}
+ }
+ 
 exports.getBeforeDocent = async (req,res) => {
-  let ListResult
+  let DataResult
   try { 
     const { docentTrack, exId } = req.query
     console.log(docentTrack,exId)
     pool = await mysql(dbpool)
     const beforeTrack =Number(docentTrack) -1
-    ListResult = await trackList.trackList(beforeTrack, exId, pool) //ex_id가 같고 트랙+1 인 데이터 찾기 
-    console.log(ListResult)
+    DataResult = await trackList.trackList(beforeTrack, exId, pool) //ex_id가 같고 트랙-1 인 데이터 찾기 
+    console.log(DataResult)
     
   } catch (e) {
     pool.release()
@@ -63,11 +64,45 @@ exports.getBeforeDocent = async (req,res) => {
     code: 6000,
     message: 'success get  before docent ',
     data: {
-      docent_title : ListResult[0].docent_title,
-       docent_audio : ListResult[0].docent_audio,
-       docent_track : ListResult[0].docent_track,
-       ex_id : ListResult[0].ex_id
+      ex_id : DataResult[0].ex_id,
+      ex_title : DataResult[0].ex_title,  
+      docent_title : DataResult[0].docent_title,
+      docent_audio : DataResult[0].docent_audio,
+      docent_track : DataResult[0].docent_track
       
+    }
+  })
+}
+exports.getNextDocent = async (req, res) => {
+  let DataResult
+  try { 
+    const { docentTrack, exId } = req.query
+    pool = await mysql(dbpool)
+    const nextTrack =Number(docentTrack)+1
+    DataResult = await trackList.trackList(nextTrack, exId, pool) //ex_id가 같고 트랙+1 인 데이터 찾기 
+    console.log(DataResult)
+    
+  } catch (e) {
+    pool.release()
+    res.status(500).send({
+      status: 'fail',
+      code: 6005,
+      message: e,
+    })
+    return
+  }
+  pool.release()
+  res.status(200).send({
+    status: 'success',
+    code: 6000,
+    message: 'success get  next docent ',
+    data: {
+      ex_id : DataResult[0].ex_id,
+      ex_title : DataResult[0].ex_title,  
+      docent_title : DataResult[0].docent_title,
+      docent_audio : DataResult[0].docent_audio,
+      docent_track : DataResult[0].docent_track
+    
     }
   })
 }
