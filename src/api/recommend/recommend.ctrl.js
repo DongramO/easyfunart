@@ -42,14 +42,14 @@ exports.getRecommendData = async (req, res) => {
         connection.release()
         res.status(500).send({
             status: "fail",
-            code: 3005,
+            code: 7001,
             message: e
         })
     }
     connection.release()
     res.status(200).send({
         status: "success",
-        code: 3000,
+        code: 7000,
         message: "successfully load exhibiton detail data",
         data: recommendResult
     })

@@ -74,7 +74,7 @@ exports.addPreference = async (req, res) => {
     genre = JSON.stringify(genre)
     subject = JSON.stringify(subject)
 
-    preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool)   
+    preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool )   
     const updateLevel = await userData.updateLevel(50, userInfo, pool)
     updateToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo, 50)
 

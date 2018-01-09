@@ -49,7 +49,7 @@ exports.getMypageInfo = async (req, res) => {
         subjectResult.push(uSubject[key])
       }
 
-
+        console.log(subjectResult)
     }
   } catch (e) {
     console.log(e)
@@ -63,7 +63,7 @@ exports.getMypageInfo = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 1001,
+    code: 1000,
     message: 'success get Mypage data',
     data: {
       user_data:{
