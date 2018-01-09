@@ -12,7 +12,7 @@ exports.addUserInfo = async (req,res) => {
     pool = await mysql(dbpool)
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     userDataResult = await userData.updateUserInfo(userInfo, body, pool)
-    updateToken = await tokenData.generateToken(user_token, req.app.get('jwt-secret'), 20)
+    updateToken = await tokenData.generateToken( req.app.get('jwt-secret'),userInfo, 20)
   } catch (e) {
     pool.release()
     res.status(500).send({
@@ -48,7 +48,7 @@ exports.addPreference = async (req, res) => {
     let genre_hashtag =preGenre.split(",")
     let subject_hashtag = preSubject.split(",")
 
-    let place = {
+    let place = { 
       "서촌" : Number(place_hashtag[0]), "강남" : Number(place_hashtag[1]), "홍대/합정" : Number(place_hashtag[2]),
        "인사동" : Number(place_hashtag[3]), "이태원" : Number(place_hashtag[4]), "충무로" : Number(place_hashtag[5]), "혜화/대학로" : Number(place_hashtag[6]),
         "삼청동/북촌" : Number(place_hashtag[7]), "기타" : Number(place_hashtag[8])
