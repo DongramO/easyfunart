@@ -112,7 +112,7 @@ exports.mainData = async (req, res) => {
   res.status(200).send({
     status: 'succes',
     code: 2000,
-    message: 'success add Preference',
+    message: 'success home list',
     data: {
       topData,
       bottomResult,
@@ -141,7 +141,7 @@ exports.serialNum = async (req, res) => {
   res.status(200).send({
     status: 'success',
     code: 2000,
-    message: 'success add Preference',
+    message: 'success serial retrieve',
     data: {
       serialData,
     },
