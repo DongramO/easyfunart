@@ -1,16 +1,16 @@
 
-exports.siteList = function siteList(latitude, longitude, connection) {
-  return new Promise((resolve, reject) => {
-    const Query = 'SELECT * FROM GALLERY where gallery_longitude=? and gallery_longitude=?'
-    connection.query(Query, [Number(latitude), Number(longitude)], (err, result) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(result)
-      }
-    })
-  })
-}
+// exports.siteList = function siteList(latitude, longitude, connection) {
+//   return new Promise((resolve, reject) => {
+//     const Query = 'SELECT * FROM GALLERY where gallery_longitude=? and gallery_longitude=?'
+//     connection.query(Query, [Number(latitude), Number(longitude)], (err, result) => {
+//       if (err) {
+//         reject(err)
+//       } else {
+//         resolve(result)
+//       }
+//     })
+//   })
+// }
 
 exports.favorList = function favorList(userId, connection) {
   return new Promise((resolve, reject) => {
@@ -42,8 +42,8 @@ exports.guideList = function guideList(exId, connection) {
 //도슨트 정보 가져오기 
 exports.trackList = function trackList( track,exId, connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'SELECT DO.docent_title,DO.docent_audio,DO.docent_track,EX.ex_id,EX.ex_title as ex_title from DOCENT DO,EXHIBITION EX where docent_track = ? AND EX.ex_id = ? AND EX.ex_id =DO.ex_id'
-    
+    // const Query = 'SELECT DO.docent_title,DO.docent_audio,DO.docent_track,EX.ex_id,EX.ex_title as ex_title from DOCENT DO,EXHIBITION EX where docent_track = ? AND EX.ex_id = ? AND EX.ex_id =DO.ex_id'
+    const Query = 'SELECT * from DOCENT WHERE docent_track =? AND ex_id =?'
     connection.query(Query, [track, exId], (err, result) => {
       if (err) {
         reject('track select error')
@@ -52,6 +52,7 @@ exports.trackList = function trackList( track,exId, connection) {
            reject('final track')
           
          }else{
+          console.log('여기인가')
         resolve(result)
          }
       }
