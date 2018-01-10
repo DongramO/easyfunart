@@ -88,6 +88,7 @@ exports.updateUserInfo = function(userInfo, body, connection){
       })
     })
 }
+
 exports.updateLevel = function(level, userInfo, connection){
   return new Promise((resolve, reject) => {
     // const { userNickname, userSex, userAge } = body      
@@ -145,4 +146,17 @@ return new Promise((resolve,reject) => {
   })
 })
 
+}
+
+exports.insertPreUserInfo = function(userId, connection){
+  return new Promise((resolve, reject) => {    
+    const Query = 'INSERT INTO PREFERENCE(user_id) values(?)'
+    connection.query(Query,userId, (err, data) => {
+      if (err) {
+        reject('INSERT user PREFERENCE data ERR')
+      } else {
+        resolve(true)
+      }
+    })
+  })
 }

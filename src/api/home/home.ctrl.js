@@ -172,7 +172,7 @@ exports.callGrade = async (req, res) => {
     data : {
       ex_id : exId,
       user_id : userId,
-      review_grade :gradecallResult[0]
+      review_grade :gradecallResult
     }
   })
 }

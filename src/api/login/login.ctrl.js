@@ -14,8 +14,10 @@ exports.login = async (req, res) => {
     const snsTokenCompare = await userData.compareSnsToken(snsToken, pool)
     if(!snsTokenCompare) {
       const result = await userData.insertUserToken(snsToken, pool)
+      insertPreUserId = await userData.insertPreUserInfo(user.user_id, pool)
     }
     user = await userData.getUserInfo(snsToken, pool)
+    
     console.log('user', user)
     //로그아웃을 하고 다시 같은 아이디로 로그인 했을 때 계속 10을 준다면 그 사용자는 닉네임 설정하고, 해야되니까 
     //db에서 값을 들고 온 다음에 그게 10보다 큰 값이면 그 값을 send 해준다.

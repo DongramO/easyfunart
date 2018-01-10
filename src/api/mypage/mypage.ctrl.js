@@ -10,9 +10,7 @@ const gradeData = require('../../db/model/grade')
 const mypageData = require('../../db/model/mypage')
 const tokenData = require('../../lib/token')
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-//프로필사진 수정 추가하기 !!!!!!!!!!!!!
-///은영 : 마이페이지 해시태그 보내는 방법 바뀜
+
 exports.getMypageInfo = async (req, res) => {
   let allResult, userInfoResult, likeCountResult, gradeCountResult, reviewCountResult,
     preferenceResult, likeListResult, reviewListResult
@@ -22,7 +20,6 @@ exports.getMypageInfo = async (req, res) => {
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
   try {
-    console.log('a')
     pool = await mysql(dbpool)
     allResult = await mypageData.getinfo(userId, pool)
     likeCountResult = await likeData.getLikeCount(userId, pool)

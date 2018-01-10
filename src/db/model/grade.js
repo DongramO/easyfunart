@@ -8,10 +8,9 @@ exports.callGradeInfo = function callGradeInfo(exId, userId,connection){
         reject('call grade info ERR')
       } else {
         if(result.length===0){
-          resolve("0")
+          resolve(0)
         }else {
-          resolve(result)
-
+          resolve(result[0].review_grade)
         }
       }
     })

@@ -5,7 +5,7 @@ const mysql = require('../../lib/dbConnection')
 const tokenData = require('../../lib/token')
 
 exports.addUserInfo = async (req,res) => {
-  let userDataResult, updateToken
+  let userDataResult, updateToken, insertPreUserId
   const { body } = req
   const { user_token } = req.headers
   try {
@@ -75,9 +75,9 @@ exports.addPreference = async (req, res) => {
     genre = JSON.stringify(genre)
     subject = JSON.stringify(subject)
 
-    preferenceInsertResult = await PreferenceData.insertPreference(place, mood, genre, subject, userInfo.userID, pool )   
+    preferenceInsertResult = await PreferenceData.modifyPreferenceInfo(place, mood, genre, subject, userInfo.userID, pool)   
     const updateLevel = await userData.updateLevel(50, userInfo, pool)
-    updateToken = await tokenData.generateToken(req.app.get('jwt-secret'),userInfo.userID, 50)
+    updateToken = await tokenData.generateToken(req.app.get('jwt-secret'), userInfo.userID, 50)
 
   } catch (e) {
     console.log(e)
