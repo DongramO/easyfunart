@@ -1,3 +1,4 @@
+const moment = require('moment')
 
 exports.getExDetailInfo = function (exId, connection) {
   return new Promise((resolve, reject) => {
@@ -115,5 +116,38 @@ exports.getAllExGalleryUserData = function (userId, connection) {
         resolve(data)
       }
     })
+  })
+}
+
+exports.DateData =  function(exId,connection){
+  return new Promise((resolve,reject) =>{
+    let today = new Date()
+    const Query = 'SELECT ex_start_date, ex_end_date FROM EXHIBITION WHERE ex_id = ?'
+    connection.query(Query,exId,(err,result) => {
+      if(err){
+        reject('date select query error')
+      }else{
+
+        today = moment().format('YYYYMMDD')
+        result[0].ex_start_date = moment(result[0].ex_start_date).format('YYYYMMDD')
+        result[0].ex_end_date = moment(result[0].ex_end_date).format('YYYYMMDD')
+
+        console.log(today,result[0].ex_start_date,result[0].ex_end_date)
+        if(moment(today).isBefore(result[0].ex_start_date) & moment(today).isBefore(result[0].ex_end_date) ){  //준비중 
+          console.log('준비중')
+          resolve(2)
+        }else if(moment(today).isAfter(result[0].ex_start_date )& moment(today).isAfter(result[0].ex_end_date)){ //마감
+          console.log('마감함')
+          resolve(0)
+        }else{
+          console.log('진행중')
+          resolve(1)
+        }
+
+      }
+      //준비중 2 진행중 1 마감 0
+      
+    })
+
   })
 }

@@ -81,12 +81,22 @@ exports.getListFavor = async (req, res) => {
 
 //도슨트 트랙리스트
 exports.getListGuide = async (req, res) => {
-  let queryResult
+  let docentDataResult,Result
   try {
     const { exId } = req.query
     connection = await mysql(dbpool)
 
-    queryResult = await docentList.guideList(exId, connection)
+    /*마감일<현재날짜  --> 마감된 전시
+      시작일>현재날짜 --> 준비주인 전시
+    */
+    docentDataResult = await docentList.guideList(exId, connection)
+
+    if(docentDataResult.length===0){
+      Result = await exhibitionData.DateData(exId,connection)
+    }else{
+      Result = 1
+    }
+    console.log('결과는 !!!!!!!!!!!!!',Result)
   } catch (e) {
     connection.release()
     res.status(500).send({
@@ -100,7 +110,10 @@ exports.getListGuide = async (req, res) => {
     status: 'success',
     code: 6000,
     message: 'Guidelist select success',
-    data: queryResult,
+    data: {
+      'ex_state' : Result,
+      docentDataResult
+    }
   })
 }
 

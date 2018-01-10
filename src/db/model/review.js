@@ -106,8 +106,8 @@ exports.getGroupGradeCount = (exId, connection) => {
 
 exports.getExReviewLimit3 = (exId, connection) => {
   return new Promise((resolve, reject) => {
-    const Query = 'select review_id, review_date, review_grade, review_content, review_image, user_nickname, user_profile from REVIEW, USER where REVIEW.user_id = USER.user_id order by review_date DESC limit 3'
-    connection.query(Query, (err, data) => {
+    const Query = 'select review_id, review_date, review_grade, USER.user_id,review_content, review_image, user_nickname, user_profile from REVIEW, USER where REVIEW.ex_id = ? AND USER.user_id = REVIEW.user_id order by review_date DESC limit 3;'
+    connection.query(Query,exId, (err, data) => {
       if(err) {
         reject('select Reivew Limit 3 Query Error')
       } else {

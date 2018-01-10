@@ -7,7 +7,7 @@ const router = express.Router()
 router.get('/',docentCtrl.getDocentMain)
 router.get('/next',docentCtrl.getNextDocent)
 router.get('/before',docentCtrl.getBeforeDocent)
-router.get('/:docentId/text', docentCtrl.getDocentText)
-router.get('/:docentId/place', docentCtrl.getDocentPlace)
+// router.get('/:docentId/text', docentCtrl.getDocentText)
+// router.get('/:docentId/place', docentCtrl.getDocentPlace)
 
 module.exports = router

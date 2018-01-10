@@ -4,7 +4,7 @@ const dbpool = require('../../../config/connection')
 const likeData = require('../../db/model/like')
 const gradeData = require('../../db/model/grade')
 const tokenData = require('../../lib/token')
-
+const moment = require('moment')
 exports.mainData = async (req, res) => {
   
   const { query } = req
@@ -15,6 +15,7 @@ exports.mainData = async (req, res) => {
     const numSet = [];
     let cnt = 0;
     userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+    const userId = userInfo.userID
     const themeSize = await homeList.themeSize(pool)
 
     while (cnt < 3) {
@@ -33,7 +34,7 @@ exports.mainData = async (req, res) => {
     }
     const exList = []
     for (let j = 0; j < bottomData.length; j++) exList.push(bottomData[j].ex_id)
-    const favorData = await likeData.getFavorList(userInfo.userID, pool)
+    const favorData = await likeData.getFavorList(userId, pool)
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < bottomData.length; j++) {
         if (bottomData[j].theme_id === numSet[i]) {
@@ -125,6 +126,8 @@ exports.serialNum = async (req, res) => {
   try {
     pool = await mysql(dbpool)
     serialData = await homeList.serialData(serial_num, pool)
+    serialData.ex_start_date =moment().format('YYYY-MM-DD')
+    serialData.ex_end_date =moment().format('YYYY-MM-DD')
   } catch (e) {
     console.log(e)
     pool.release()
