@@ -102,7 +102,7 @@ exports.getNextDocent = async (req, res) => {
       docent_title : DataResult[0].docent_title,
       docent_audio : DataResult[0].docent_audio,
       docent_track : DataResult[0].docent_track
-    
+
     }
   })
 }

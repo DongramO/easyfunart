@@ -87,6 +87,7 @@ exports.getListGuide = async (req, res) => {
     connection = await mysql(dbpool)
 
     queryResult = await docentList.guideList(exId, connection)
+  
   } catch (e) {
     connection.release()
     res.status(500).send({
