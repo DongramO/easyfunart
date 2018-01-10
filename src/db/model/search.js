@@ -97,7 +97,6 @@ exports.getSearchResultQuery = function (userId, qString, period, order, connect
                 reject('Search Query Fail')
             } else {
                 resolve(result)
-
             }
         })
     })

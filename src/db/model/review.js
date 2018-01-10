@@ -11,10 +11,10 @@ exports.writeReview = function writeReview(body, file, userId, connection) {
     const Query = 'INSERT INTO REVIEW(review_watch_date ,review_grade, review_content, review_image, \
       review_date, ex_id, user_id) values(?,?,?,?,?,?,?)'
       if(!file){
-        insert = [body.reviewWatchDate,Number(body.reviewGrade), body.reviewContent, null,
+        insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'),Number(body.reviewGrade), body.reviewContent, null,
           moment().format('YYYY-MM-DD'),  body.exId, userId]
       } else {
-        [body.reviewWatchDate,Number(body.reviewGrade), body.reviewContent, file.location,
+        [moment(body.reviewWatchDate).format('YYYY-MM-DD'),Number(body.reviewGrade), body.reviewContent, file.location,
           moment().format('YYYY-MM-DD'),  body.exId, userId]
       }
     connection.query(Query, insert, (err, result) => {
@@ -51,9 +51,9 @@ exports.updateReview = function updateReview(body, file, userId, connection) {
     const Query = 'UPDATE REVIEW SET review_grade = ?, review_content = ?, review_image = ?,\
      review_date = ? ,review_watch_date = ? WHERE review_id = ? AND user_id = ?'
      if(!file)  {
-       insert = [Number(body.reviewGrade), body.reviewContent, null, moment().format('YYYY-MM-DD'),body.reviewWatchDate, body.reviewId, userId]
+       insert = [Number(body.reviewGrade), body.reviewContent, null, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), body.reviewId, userId]
      } else {
-      insert = [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYY-MM-DD'),body.reviewWatchDate, body.reviewId, userId]
+      insert = [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), body.reviewId, userId]
      }
     connection.query(Query, insert, (err, result) => {
       if (err) {

@@ -2,6 +2,7 @@ const search = require('../../db/model/search')
 const dbpool = require('../../../config/connection')
 const mysql = require('../../lib/dbConnection')
 const tokenData = require('../../lib/token')
+const moment = require('moment')
 // const sphinxConnection = require('../../../config/sphinxConnection')
 
 //일반 쿼리문 사용
@@ -23,8 +24,8 @@ exports.querySearchData = async (req, res) => {
         ex_image : searchResult[i].ex_image,
         ex_author_name : searchResult[i].ex_author_name,
         ex_title : searchResult[i].ex_title,
-        ex_start_date : searchResult[i].ex_start_date,
-        ex_end_date : searchResult[i].ex_end_date,
+        ex_start_date : moment(searchResult[i].ex_start_date).format('YYYY-MM-DD'),
+        ex_end_date : moment(searchResult[i].ex_end_date).format('YYYY-MM-DD'),
         gallery_name : searchResult[i].gallery_name,
         ex_average_grade : searchResult[i].ex_average_grade,
         likeFlag : 0
