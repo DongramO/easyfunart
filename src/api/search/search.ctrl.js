@@ -7,7 +7,7 @@ const tokenData = require('../../lib/token')
 //   util = require('util'),
 //   assert = require('assert')
 
-const sphinxConnection = require('../../../config/sphinxConnection')
+//const sphinxConnection = require('../../../config/sphinxConnection')
 // 13.124.72.52
 
 exports.newSearchData = async (req, res) => {

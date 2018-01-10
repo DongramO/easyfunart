@@ -127,7 +127,6 @@ exports.DateData =  function(exId,connection){
       if(err){
         reject('date select query error')
       }else{
-
         today = moment().format('YYYYMMDD')
         result[0].ex_start_date = moment(result[0].ex_start_date).format('YYYYMMDD')
         result[0].ex_end_date = moment(result[0].ex_end_date).format('YYYYMMDD')

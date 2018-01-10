@@ -5,7 +5,7 @@ const dbPool = require('../../../config/connection')
 const dbConnection = require('../../lib/dbConnection')
 const preCompare = require('../../moduels/preCompare')
 const decodeTokenFunc = require('../../lib/token')
-
+const moment = require('moment')
 exports.getExInfo = async (req, res) => {
     let exDetailDataResult, exAuthorDataResult, exUserLikeResult, exUserGradeResult, preferenceDataResult, likeflag, user_review_grade
     let uGenre, uMood, uPlace, uSubject
@@ -94,6 +94,7 @@ exports.getExInfo = async (req, res) => {
                 grade: user_review_grade
             },
             exhibition: {
+
                 average_grade: exDetailDataResult[0].ex_average_grade,
                 content: exDetailDataResult[0].ex_content
             },

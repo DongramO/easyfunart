@@ -22,6 +22,7 @@ exports.getMypageInfo = async (req, res) => {
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
   try {
+    console.log('a')
     pool = await mysql(dbpool)
     allResult = await mypageData.getinfo(userId, pool)
     likeCountResult = await likeData.getLikeCount(userId, pool)
