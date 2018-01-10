@@ -1,4 +1,3 @@
-
 const docentData = require('../../db/model/docentData')
 const trackList = require('../../db/model/siteList')
 const mysql = require('../../lib/dbConnection')

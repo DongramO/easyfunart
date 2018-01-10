@@ -90,8 +90,8 @@ exports.getExScore = (exId, connection) => {
 
 exports.getAllExInfo = function (connection) {
   return new Promise((resolve, reject) => {
-    const Query = 'select gallery_id, ex_id, ex_image, ex_title from EXHIBITION order by gallery_id ASC'
-    connection.query(Query, (err, data) => {
+    const Query = 'select gallery_id, ex_id, ex_image, ex_title from EXHIBITION where ex_start_date < ? and ex_end_date > ? order by gallery_id ASC'
+    connection.query(Query, [moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')], (err, data) => {
       if (err) {
         reject('Exhibition Select Query Error')
       } else {

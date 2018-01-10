@@ -22,7 +22,6 @@ exports.getGalleryInfo = async (req, res) => {
         code: 4000,
         message: "successfully load gallery data",
         data: {
-            period: exGalleryDataResult[0].gallery_period,
             runtime: exGalleryDataResult[0].gallery_runtime,
             address: exGalleryDataResult[0].gallery_address,
             phone : exGalleryDataResult[0].gallery_phone,

@@ -2,45 +2,9 @@ const search = require('../../db/model/search')
 const dbpool = require('../../../config/connection')
 const mysql = require('../../lib/dbConnection')
 const tokenData = require('../../lib/token')
+// const sphinxConnection = require('../../../config/sphinxConnection')
 
-// const Sphinx = require('sphinxapi'),
-//   util = require('util'),
-//   assert = require('assert')
-
-const sphinxConnection = require('../../../config/sphinxConnection')
-// 13.124.72.52
-
-exports.newSearchData = async (req, res) => {
-  let searchDataResult
-  //   const  { user_token }  = req.headers
-  //   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
-  //   const userId = userInfo.userID
-  const { data } = req.query
-  try {
-    pool = await mysql(dbpool)
-    searchDataResult = await search.newSearchInfo(data, pool)
-  } catch (e) {
-    pool.release()
-    res.status(500).send({
-      status: 'fail',
-      code: 01,
-      message: e,
-    })
-    return
-  }
-
-  pool.release()
-  res.status(200).send({
-    status: 'success',
-    code: 0,
-    message: 'successful search Data',
-    data: {
-      searchDataResult
-    }
-  })
-}
-
-
+//일반 쿼리문 사용
 exports.querySearchData = async (req, res) => {
   let searchResult, sendData = []
   try {
@@ -74,7 +38,7 @@ exports.querySearchData = async (req, res) => {
     pool.release()
     res.status(500).send({
       status: 'fail',
-      code: 0,
+      code: 7002,
       message: e,
     })
     return
@@ -82,10 +46,37 @@ exports.querySearchData = async (req, res) => {
   pool.release()
   res.status(200).send({
     status: 'success',
-    code: 0,
+    code: 7000,
     message: 'successfully search Data',
     data: {
       searchData: sendData
     }
   })
 }
+
+//SPHINX 사용해서 검색
+
+// exports.sphinxSearchData = async (req, res) => {
+//   let sphinxSearchResult
+//   try {
+//     const { user_token } = req.headers
+//     const { qString, period, order } = req.query
+//     //*****************************************************************
+//     const decodedTokenResult = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+//     const userId = decodedTokenResult.userID
+//     //******************************************************************
+//     pool = await mysql(sphinxConnection)
+//     sphinxSearchResult = await search.getSearchResult(qString, period, order, pool)
+//     console.log(sphinxSearchResult)
+//   } catch (e) {
+//     pool.release()
+//     res.status(500).send({
+//       status: 'fail',
+//       code: 0,
+//       message: e,
+//     })
+//     return
+//   }
+//   pool.release()
+
+// }
