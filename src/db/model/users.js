@@ -136,7 +136,9 @@ return new Promise((resolve,reject) => {
   let insert
   if(file){
      insert =[file.location, userId]
-  } else insert = [null, userId]
+  } else {
+    insert = ['', userId]
+  }
   connection.query(Query, insert, (err, result) => {
     if(err){
       reject('profile image update query error')

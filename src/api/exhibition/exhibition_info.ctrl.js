@@ -55,6 +55,7 @@ exports.getExInfo = async (req, res) => {
             }
         } else {
             uGenre = JSON.parse(preferenceDataResult[0].pre_genre)
+            console.log(uGenre)
             uMood = JSON.parse(preferenceDataResult[0].pre_mood)
             uPlace = JSON.parse(preferenceDataResult[0].pre_place)
             uSubject = JSON.parse(preferenceDataResult[0].pre_subject)
@@ -143,7 +144,6 @@ exports.getExReview = async (req, res) => {
                     break;
             }
         }
-
 
     } catch (e) {
         connection.release()

@@ -12,7 +12,7 @@ module.exports = multer({
     bucket: 'sopt-21-server-eunyeong',
     acl: 'public-read',
     key(req, file, cb) {
-      cb(null, `${Date.now()}.${file.originalname.split('.').pop()}`)
+      cb(null, Date.now() + '.' + file.originalname.split('.').pop())
     },
   }),
 })

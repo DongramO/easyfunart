@@ -1,4 +1,3 @@
-
 const mysql = require('../../lib/dbConnection')
 const dbpool = require('../../../config/connection')
 const upload = require('../../lib/s3Connect')
@@ -152,19 +151,9 @@ exports.profileModify = async (req, res) => {
     const profileUPdate = await userData.updateProfile(userId, file, pool)
   } catch (e) {
     pool.release()
-    res.status(500).send({
-      status: 'fail',
-      code: 1005,
-      message: e,
-    })
-    return
+    throw e
   }
   pool.release()
-  res.status(200).send({
-    status: 'success',
-    code: 1000,
-    message: 'change profile image success',
-  })
 }
 
 exports.userNicknameModify = async (req, res) => {
@@ -177,6 +166,7 @@ exports.userNicknameModify = async (req, res) => {
     pool = await mysql(dbpool)
     nicknameModifyResult = await userData.modifyNicknameInfo(userNickname, userId, pool)
   } catch (e) {
+    pool.release()
     res.status(500).send({
       status: 'fail',
       code: 1006,

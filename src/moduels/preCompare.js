@@ -11,6 +11,3 @@ module.exports = function preCompare(exObject, userObject, selected, unSelected)
     }
     return {selected : selected, unSelected : unSelected}
   }
-
-
-  ///array 파라미터 for(i ; i < max ; i++)로 바꾸기 for in문 바꾸기

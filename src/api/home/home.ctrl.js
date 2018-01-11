@@ -170,7 +170,7 @@ exports.callGrade = async (req, res) => {
     code : 4000,
     message : 'successful call grade info',
     data : {
-      ex_id : exId,
+      ex_id : Number(exId),
       user_id : userId,
       review_grade :gradecallResult
     }

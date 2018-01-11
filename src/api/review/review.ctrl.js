@@ -1,22 +1,22 @@
 const reviewModel = require('../../db/model/review')
 const exhibition = require('../../db/model/exhibitionData')
 const count = require('../../db/model/getcount')
-const upload = require('../../lib/s3Connect')
 const mysql = require('../../lib/dbConnection')
 const renewFunc = require('../../moduels/calAverage.js')
 const dbpool = require('../../../config/connection')
 const jwt = require('../../lib/token')
 
 
+
 /* 관람날짜 받아오기  / 리뷰 부분 다시 수정하기 */
 
 
 exports.writeReview = async (req, res) => {
-  
-  const { body, file } = req
-  const { exId, reviewContent,reviewGrade,reviewWatchDate } = body
-  const { user_token } = req.headers
   try {
+    const { body, file } = req
+    const { exId, reviewContent, reviewGrade, reviewWatchDate } = body
+    const { user_token } = req.headers
+
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
 
@@ -27,19 +27,9 @@ exports.writeReview = async (req, res) => {
     const scoreResult = await exhibition.updateScore(exId, newAverage, pool)
   } catch (e) {
     pool.release()
-    res.status(500).send({
-      status: 'fail',
-      code: 5006,
-      message: 'write review select fail',
-    })
-    return
+    throw e
   }
   pool.release()
-  res.status(200).send({
-    status: 'success',
-    code: 5000,
-    message: 'write review select success',
-  })
 }
 
 exports.getReview = async (req, res) => {
@@ -68,10 +58,11 @@ exports.getReview = async (req, res) => {
 }
 
 exports.updateReivew = async (req, res) => {
-  const { body, file } = req
-  const { reviewId, exId, reviewContent,reviewGrade,reviewWatchDate } = body
-  const { user_token } = req.headers
   try {
+    const { body, file } = req
+    const { reviewId, exId, reviewContent, reviewGrade, reviewWatchDate } = body
+    const { user_token } = req.headers
+
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
     const queryResult = await reviewModel.updateReview(body, file, tokenInfo.userID, pool)
@@ -81,19 +72,9 @@ exports.updateReivew = async (req, res) => {
     const scoreResult = await exhibition.updateScore(exId, newAverage, pool)
   } catch (e) {
     pool.release()
-    res.status(500).send({
-      status: 'fail',
-      code: 5007,
-      message: 'update review fail',
-    })
-    return
+    throw e
   }
   pool.release()
-  res.status(200).send({
-    status: 'success',
-    code: 5000,
-    message: 'update review success',
-  })
 }
 
 
@@ -117,7 +98,7 @@ exports.deleteReview = async (req, res) => {
     status: 'success',
     code: 5000,
     message: 'Review delete success',
-  })  
+  })
 }
 
 

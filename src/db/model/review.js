@@ -8,13 +8,12 @@ const moment = require('moment')
 exports.writeReview = function writeReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
     let insert
-    const Query = 'INSERT INTO REVIEW(review_watch_date ,review_grade, review_content, review_image, \
-      review_date, ex_id, user_id) values(?,?,?,?,?,?,?)'
+    const Query = 'INSERT INTO REVIEW(review_watch_date ,review_grade, review_content, review_image, review_date, ex_id, user_id) values(?,?,?,?,?,?,?)'
       if(!file){
-        insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'),Number(body.reviewGrade), body.reviewContent, null,
+        insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewGrade), body.reviewContent, null,
           moment().format('YYYY-MM-DD'),  body.exId, userId]
       } else {
-        [moment(body.reviewWatchDate).format('YYYY-MM-DD'),Number(body.reviewGrade), body.reviewContent, file.location,
+        insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewGrade), body.reviewContent, file.location,
           moment().format('YYYY-MM-DD'),  body.exId, userId]
       }
     connection.query(Query, insert, (err, result) => {
@@ -48,8 +47,7 @@ exports.getReview = function getReview(query, connection) { ////////////////////
 exports.updateReview = function updateReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
     let insert
-    const Query = 'UPDATE REVIEW SET review_grade = ?, review_content = ?, review_image = ?,\
-     review_date = ? ,review_watch_date = ? WHERE review_id = ? AND user_id = ?'
+    const Query = 'UPDATE REVIEW SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? ,review_watch_date = ? WHERE review_id = ? AND user_id = ?'
      if(!file)  {
        insert = [Number(body.reviewGrade), body.reviewContent, null, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), body.reviewId, userId]
      } else {

@@ -31,7 +31,6 @@ exports.getListSite = async (req, res) => {
         }
       }
     }
-
   } catch (e) {
     connection.release()
     res.status(500).send({
@@ -96,7 +95,6 @@ exports.getListGuide = async (req, res) => {
     }else{
       Result = 1
     }
-    console.log('결과는 !!!!!!!!!!!!!',Result)
   } catch (e) {
     connection.release()
     res.status(500).send({
