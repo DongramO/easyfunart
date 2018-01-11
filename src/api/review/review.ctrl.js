@@ -15,6 +15,7 @@ exports.writeReview = async (req, res) => {
   
   const { body, file } = req
   const { exId, reviewContent,reviewGrade,reviewWatchDate } = body
+  console.log(req.body)
   const { user_token } = req.headers
   try {
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
