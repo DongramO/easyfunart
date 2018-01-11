@@ -5,7 +5,44 @@ const tokenData = require('../../lib/token')
 const moment = require('moment')
 // const sphinxConnection = require('../../../config/sphinxConnection')
 
-//일반 쿼리문 사용
+// const Sphinx = require('sphinxapi'),
+//   util = require('util'),
+//   assert = require('assert')
+
+// const sphinxConnection = require('../../../config/sphinxConnection')
+// 13.124.72.52
+
+exports.newSearchData = async (req, res) => {
+  let searchDataResult
+  //   const  { user_token }  = req.headers
+  //   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
+  //   const userId = userInfo.userID
+  const { data } = req.query
+  try {
+    pool = await mysql(dbpool)
+    searchDataResult = await search.newSearchInfo(data, pool)
+  } catch (e) {
+    pool.release()
+    res.status(500).send({
+      status: 'fail',
+      code: 01,
+      message: e,
+    })
+    return
+  }
+
+  pool.release()
+  res.status(200).send({
+    status: 'success',
+    code: 0,
+    message: 'successful search Data',
+    data: {
+      searchDataResult
+    }
+  })
+}
+
+
 exports.querySearchData = async (req, res) => {
   let searchResult, sendData = []
   try {

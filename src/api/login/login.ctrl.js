@@ -19,6 +19,10 @@ exports.login = async (req, res) => {
     } else {
       user = await userData.getUserInfo(snsToken, pool)
     }
+<<<<<<< HEAD
+    user = await userData.getUserInfo(snsToken, poolz)
+=======
+>>>>>>> 58f4b72be2f1a99472dbddd2626f3011f1f329e2
     
     console.log('user', user)
     //로그아웃을 하고 다시 같은 아이디로 로그인 했을 때 계속 10을 준다면 그 사용자는 닉네임 설정하고, 해야되니까 
