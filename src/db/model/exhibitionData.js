@@ -37,7 +37,7 @@ exports.getUserExLikeInfo = function (exId, userId, connection) {
       if (err) {
         reject('user Favor Select Query Error')
       } else {
-        if (!data) {
+        if (!data[0]) {
           resolve(false)
         } else {
           resolve(true)
@@ -127,6 +127,7 @@ exports.DateData =  function(exId,connection){
       if(err){
         reject('date select query error')
       }else{
+        console.log(result)
         today = moment().format('YYYYMMDD')
         result[0].ex_start_date = moment(result[0].ex_start_date).format('YYYYMMDD')
         result[0].ex_end_date = moment(result[0].ex_end_date).format('YYYYMMDD')

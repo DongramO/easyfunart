@@ -124,6 +124,7 @@ exports.getExReview = async (req, res) => {
         totalGradeCount = await reviewData.getTotalReviewCount(req.params.exId, connection)
         groupGradeCount = await reviewData.getGroupGradeCount(req.params.exId, connection)
 
+        console.log("getExReview",averageGradeResult)
         ////////////////이거 형 확인하기
         for (var i in groupGradeCount) {
             switch (groupGradeCount[i].review_grade) {

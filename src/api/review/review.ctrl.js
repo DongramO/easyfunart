@@ -7,18 +7,14 @@ const dbpool = require('../../../config/connection')
 const jwt = require('../../lib/token')
 
 
-
-/* 관람날짜 받아오기  / 리뷰 부분 다시 수정하기 */
-
-
 exports.writeReview = async (req, res) => {
   try {
     const { body, file } = req
     const { exId, reviewContent, reviewGrade, reviewWatchDate } = body
     const { user_token } = req.headers
 
-    const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
+    const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
 
     const queryResult = await reviewModel.writeReview(body, file, tokenInfo.userID, pool)
     const totalCount = await count.getcount(exId, pool)
@@ -84,7 +80,7 @@ exports.deleteReview = async (req, res) => {
   try {
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
     pool = await mysql(dbpool)
-    queryResult = await reviewModel.deleteReview(reviewId, tokenInfo.userId, pool)
+    queryResult = await reviewModel.deleteReview(reviewId, tokenInfo.userID, pool)
   } catch (e) {
     pool.release()
     res.status(500).send({

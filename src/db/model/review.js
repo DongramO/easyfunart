@@ -7,17 +7,14 @@ const moment = require('moment')
 /////////////////////////////////바꾸기
 exports.writeReview = function writeReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
-    console.log('access write review')
-    console.log(body)
-    console.log(file)
     let insert
     const Query = 'INSERT INTO REVIEW(review_watch_date ,review_grade, review_content, review_image, review_date, ex_id, user_id) values(?,?,?,?,?,?,?)'
       if(!file){
         insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewGrade), body.reviewContent, null,
-          moment().format('YYYY-MM-DD'),  body.exId, userId]
+          moment().format('YYYY-MM-DD'),  Number(body.exId), Number(userId)]
       } else {
         insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewGrade), body.reviewContent, file.location,
-          moment().format('YYYY-MM-DD'),  body.exId, userId]
+          moment().format('YYYY-MM-DD'),  Number(body.exId), Number(userId)]
       }
     connection.query(Query, insert, (err, result) => {
       if (err) {
@@ -53,9 +50,9 @@ exports.updateReview = function updateReview(body, file, userId, connection) {
     let insert
     const Query = 'UPDATE REVIEW SET review_grade = ?, review_content = ?, review_image = ?, review_date = ? ,review_watch_date = ? WHERE review_id = ? AND user_id = ?'
      if(!file)  {
-       insert = [Number(body.reviewGrade), body.reviewContent, null, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), body.reviewId, userId]
+       insert = [Number(body.reviewGrade), body.reviewContent, null, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewId), Number(userId)]
      } else {
-      insert = [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), body.reviewId, userId]
+      insert = [Number(body.reviewGrade), body.reviewContent, file.location, moment().format('YYYY-MM-DD'),moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewId), Number(userId)]
      }
     connection.query(Query, insert, (err, result) => {
       if (err) {

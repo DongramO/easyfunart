@@ -137,7 +137,7 @@ return new Promise((resolve,reject) => {
   if(file){
      insert =[file.location, userId]
   } else {
-    insert = ['', userId]
+    insert = [null, userId]
   }
   connection.query(Query, insert, (err, result) => {
     if(err){

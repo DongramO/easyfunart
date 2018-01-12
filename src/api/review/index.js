@@ -55,7 +55,7 @@ router.post('/', upload.single('image'), async function(req, res) {
   res.status(200).send({
     status: 'success',
     code: 5000,
-    message: 'modify profile image success',
+    message: 'write reivew success',
   })
 })
 

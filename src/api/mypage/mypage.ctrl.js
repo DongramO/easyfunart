@@ -45,8 +45,6 @@ exports.getMypageInfo = async (req, res) => {
       for(var key in uSubject) {
         subjectResult.push(uSubject[key])
       }
-
-        console.log(subjectResult)
     }
   } catch (e) {
     console.log(e)

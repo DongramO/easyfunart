@@ -15,7 +15,7 @@ exports.homeData = function homeData(connection) {
 exports.ThemeData = function ThemeData( numSet, connection) {
   return new Promise((resolve, reject) => {
     const Query = 
-    `(select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
+    `(select E.ex_image, E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
       from EXHIBITION as E
   inner join THEME as T on E.theme_id = T.theme_id 
   inner join GALLERY as G on G.gallery_id = E.gallery_id 
@@ -24,7 +24,7 @@ exports.ThemeData = function ThemeData( numSet, connection) {
       where E.theme_id = 1
       and T.theme_date > curdate() group by E.ex_id limit 3)
 UNION ALL
-  (select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
+  (select E.ex_image, E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
       from EXHIBITION as E
   inner join THEME as T on E.theme_id = T.theme_id 
   inner join GALLERY as G on G.gallery_id = E.gallery_id 
@@ -33,7 +33,7 @@ UNION ALL
       where E.theme_id = 2
       and T.theme_date > curdate() group by E.ex_id limit 3)
 UNION ALL
-  (select E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
+  (select E.ex_image, E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
       from EXHIBITION as E
   inner join THEME as T on E.theme_id = T.theme_id 
   inner join GALLERY as G on G.gallery_id = E.gallery_id 
