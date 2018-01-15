@@ -4,9 +4,11 @@ const dbConnection = require('../../lib/dbConnection')
 
 exports.getGalleryInfo = async (req, res) => {
     let exGalleryDataResult
+    const  connection = await dbConnection(dbPool)
+    console.log('ttt')
     try {
         const { galleryId } = req.params
-        connection = await dbConnection(dbPool)
+       
         exGalleryDataResult = await exhibitionData.getGalleryInfo(galleryId, connection)
     } catch (e) {
         connection.release()

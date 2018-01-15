@@ -18,8 +18,8 @@ exports.newSearchData = async (req, res) => {
   //   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   //   const userId = userInfo.userID
   const { data } = req.query
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
     searchDataResult = await search.newSearchInfo(data, pool)
   } catch (e) {
     pool.release()
@@ -45,6 +45,7 @@ exports.newSearchData = async (req, res) => {
 
 exports.querySearchData = async (req, res) => {
   let searchResult, sendData = []
+  const pool = await mysql(dbpool)
   try {
     const { user_token } = req.headers
     const { qString, period, order } = req.query
@@ -52,7 +53,6 @@ exports.querySearchData = async (req, res) => {
     const decodedTokenResult = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     const userId = decodedTokenResult.userID
     //******************************************************************
-    pool = await mysql(dbpool)
     searchResult = await search.getSearchResultQuery(userId, qString, period, order, pool)
 
     for(let i = 0; i < searchResult.length ; i++) {

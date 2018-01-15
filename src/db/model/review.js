@@ -7,7 +7,8 @@ const moment = require('moment')
 /////////////////////////////////바꾸기
 exports.writeReview = function writeReview(body, file, userId, connection) {
   return new Promise((resolve, reject) => {
-    let insert
+    	console.log(body)
+	let insert
     const Query = 'INSERT INTO REVIEW(review_watch_date ,review_grade, review_content, review_image, review_date, ex_id, user_id) values(?,?,?,?,?,?,?)'
       if(!file){
         insert = [moment(body.reviewWatchDate).format('YYYY-MM-DD'), Number(body.reviewGrade), body.reviewContent, null,
@@ -115,10 +116,12 @@ exports.getExReviewLimit3 = (exId, connection) => { ///////////////////관람 �
       if(err) {
         reject('select Reivew Limit 3 Query Error')
       } else {
-        for(var i in data){
-          data[i].review_date = moment(data[i].review_date).format('YYYY-MM-DD')
-          data[i].review_watch_date = moment(data[i].review_watch_date).format('YYYY-MM-DD')
-          }
+        if(data.length != 0){
+          for(var i in data){
+            data[i].review_date = moment(data[i].review_date).format('YYYY-MM-DD')
+            data[i].review_watch_date = moment(data[i].review_watch_date).format('YYYY-MM-DD')
+            }
+        }
         resolve(data)
       }
     })

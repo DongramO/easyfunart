@@ -9,10 +9,11 @@ const decodeTokenFunc = require('../../lib/token')
 
 exports.getListSite = async (req, res) => {
   let gallerySiteDataResult, userNearGalleryDataResult, totalExDataResult, nearExDataResult = []
+  const connection = await mysql(dbpool)
   try {
     const { latitude, longitude } = req.query
 
-    connection = await mysql(dbpool)
+    
     gallerySiteDataResult = await galleryData.getGalleryLatLngInfo(connection)
     userNearGalleryDataResult = calDistance(latitude, longitude, gallerySiteDataResult)
     // userNearDataResult = await docentList.siteList(latitude, longitude, connection)
@@ -38,6 +39,7 @@ exports.getListSite = async (req, res) => {
       code: 6001,
       message: e,
     })
+    return
   }
   connection.release()
   res.status(200).send({
@@ -51,6 +53,7 @@ exports.getListSite = async (req, res) => {
 
 exports.getListFavor = async (req, res) => {
   let userFavorDataResult
+  const connection = await mysql(dbpool)
   try {
     //*****************************************************************
     //토큰 사용시
@@ -58,7 +61,6 @@ exports.getListFavor = async (req, res) => {
     const decodedTokenResult = await decodeTokenFunc.decodedToken(user_token, req.app.get('jwt-secret'))
     const userId = decodedTokenResult.userID
     //******************************************************************
-    connection = await mysql(dbpool)
 
     userFavorDataResult = await docentList.favorList(userId, connection)
   } catch (e) {
@@ -68,6 +70,7 @@ exports.getListFavor = async (req, res) => {
       code: 6002,
       message: e,
     })
+    return
   }
   connection.release()
   res.status(200).send({
@@ -81,9 +84,9 @@ exports.getListFavor = async (req, res) => {
 //도슨트 트랙리스트
 exports.getListGuide = async (req, res) => {
   let docentDataResult,Result
+  const connection = await mysql(dbpool)
   try {
     const { exId } = req.query
-    connection = await mysql(dbpool)
 
     /*마감일<현재날짜  --> 마감된 전시
       시작일>현재날짜 --> 준비주인 전시
@@ -102,6 +105,7 @@ exports.getListGuide = async (req, res) => {
       code: 6003,
       message: e,
     })
+    return
   }
   connection.release()
   res.status(200).send({

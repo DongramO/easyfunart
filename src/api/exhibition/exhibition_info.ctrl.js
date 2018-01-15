@@ -6,11 +6,13 @@ const dbConnection = require('../../lib/dbConnection')
 const preCompare = require('../../moduels/preCompare')
 const decodeTokenFunc = require('../../lib/token')
 const moment = require('moment')
+
 exports.getExInfo = async (req, res) => {
     let exDetailDataResult, exAuthorDataResult, exUserLikeResult, exUserGradeResult, preferenceDataResult, likeflag, user_review_grade
     let uGenre, uMood, uPlace, uSubject
     let eGenre, eMood, ePlace, eSubject
     let selected = [], unSelected = []
+    const connection = await dbConnection(dbPool)
     try {
         //*****************************************************************
         //토큰 사용시
@@ -18,8 +20,7 @@ exports.getExInfo = async (req, res) => {
         const decodedTokenResult = await decodeTokenFunc.decodedToken(user_token, req.app.get('jwt-secret'))
         const userId = decodedTokenResult.userID
         //******************************************************************
-        connection = await dbConnection(dbPool)
-
+        
         exDetailDataResult = await exhibitionData.getExDetailInfo(req.params.exId, connection)
         exUserLikeResult = await exhibitionData.getUserExLikeInfo(req.params.exId, userId, connection)
         exUserGradeResult = await exhibitionData.getUserReviewGrade(req.params.exId, userId, connection)
@@ -153,6 +154,7 @@ exports.getExReview = async (req, res) => {
             code: 4003,
             message: e
         })
+        return
     }
     connection.release()
     res.status(200).send({

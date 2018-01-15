@@ -8,9 +8,9 @@ exports.login = async (req, res) => {
   //1. 그 회원이 있으면 유저id 긁어와서 jwt토큰 발행
   //2. 그 회원이 없으면 새로 유저정보 insert
   let user_token, user
+  const pool = await mysql(dbpool)
   try {
     const { snsToken } = req.body
-    pool = await mysql(dbpool)
     const snsTokenCompare = await userData.compareSnsToken(snsToken, pool)
     if(!snsTokenCompare) {
       const result = await userData.insertUserToken(snsToken, pool)
@@ -51,8 +51,8 @@ exports.checkNickname = async (req, res) => {
   let userSelectResult, checkFlag
   //const { user_token } = req.headers
   const { userNickname } = req.query
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
     userSelectResult = await userData.selectUserNickname(userNickname, pool)
   } catch (e) {
     pool.release()
@@ -76,14 +76,13 @@ exports.checkNickname = async (req, res) => {
 
 exports.autoLoginCheck = async (req, res) => {
   let userDataResult
+  const pool = await mysql(dbpool)
   try {
     //사용자가 토큰을 주면 토큰을 받고 유효한지 확인 후 success인지 아닌지 respond
     //level이 10이면 닉네임 설정으로 이동,
     //20이면 취향 설정으로 이동
     //50이면 홈 화면으로 이동
     const { user_token } = req.headers
-    pool = await mysql(dbpool)
-    
     const decodedTokenResult = await token.decodedToken(user_token, req.app.get('jwt-secret'))
     userDataResult = await userData.getMypageUserInfo(decodedTokenResult.userID, pool)
 
@@ -95,6 +94,7 @@ exports.autoLoginCheck = async (req, res) => {
             code: 1007,
             message: e
         })
+        return
   }
   pool.release()
   res.status(200).send({

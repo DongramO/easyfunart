@@ -21,7 +21,7 @@ exports.ThemeData = function ThemeData( numSet, connection) {
   inner join GALLERY as G on G.gallery_id = E.gallery_id 
       left join FAVOR 
   on E.ex_id = FAVOR.ex_id
-      where E.theme_id = 1
+      where E.theme_id = ?
       and T.theme_date > curdate() group by E.ex_id limit 3)
 UNION ALL
   (select E.ex_image, E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
@@ -30,7 +30,7 @@ UNION ALL
   inner join GALLERY as G on G.gallery_id = E.gallery_id 
       left join FAVOR 
   on E.ex_id = FAVOR.ex_id
-      where E.theme_id = 2
+      where E.theme_id = ?
       and T.theme_date > curdate() group by E.ex_id limit 3)
 UNION ALL
   (select E.ex_image, E.theme_id, E.ex_id, E.ex_title, E.ex_start_date, E.ex_end_date, E.ex_average_grade, G.gallery_id, G.gallery_name, FAVOR.user_id, T.theme_title
@@ -39,7 +39,7 @@ UNION ALL
   inner join GALLERY as G on G.gallery_id = E.gallery_id 
       left join FAVOR 
   on E.ex_id = FAVOR.ex_id
-      where E.theme_id = 3
+      where E.theme_id = ?
       and T.theme_date > curdate() group by E.ex_id limit 3)`
 
     connection.query(Query, [ numSet[0], numSet[1], numSet[2] ], (err, result) => {

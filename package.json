@@ -22,8 +22,10 @@
     "eslint-plugin-import": "^2.8.0"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "aws-sdk": "^2.176.0",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "eslint": "^4.14.0",
     "express": "^4.16.2",
     "helmet": "^3.9.0",

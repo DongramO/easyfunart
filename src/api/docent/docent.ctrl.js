@@ -5,11 +5,11 @@ const dbpool = require('../../../config/connection')
 const decodeTokenFunc = require('../../lib/token')
 
  exports.getDocentMain = async (req, res) =>{
-
+  const pool = await mysql(dbpool)
   let DataResult,dText
   try { 
     const { docentTrack, exId } = req.query
-    pool = await mysql(dbpool)
+    
     DataResult = await trackList.trackList(docentTrack, exId, pool) 
     dText = DataResult[0].docent_text.replace(/\\n/g,"\n")
     
@@ -41,13 +41,13 @@ const decodeTokenFunc = require('../../lib/token')
  
 exports.getBeforeDocent = async (req,res) => {
   let DataResult, dText
+  const pool = await mysql(dbpool)
   try { 
     const { docentTrack, exId } = req.query
     console.log(docentTrack,exId)
-    pool = await mysql(dbpool)
+    
     const beforeTrack =Number(docentTrack) -1
     DataResult = await trackList.trackList(beforeTrack, exId, pool) //ex_id가 같고 트랙-1 인 데이터 찾기 
-    console.log(DataResult)
     dText = DataResult[0].docent_text.replace(/\\n/g,"\n")
     
   } catch (e) {
@@ -77,12 +77,12 @@ exports.getBeforeDocent = async (req,res) => {
 }
 exports.getNextDocent = async (req, res) => {
   let DataResult , dText
+  const pool = await mysql(dbpool)
   try { 
     const { docentTrack, exId } = req.query
-    pool = await mysql(dbpool)
+    
     const nextTrack =Number(docentTrack)+1
     DataResult = await trackList.trackList(nextTrack, exId, pool) //ex_id가 같고 트랙+1 인 데이터 찾기 
-    console.log(DataResult)
     dText = DataResult[0].docent_text.replace(/\\n/g,"\n")
     
   } catch (e) {

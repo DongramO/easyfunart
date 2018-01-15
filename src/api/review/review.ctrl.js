@@ -8,12 +8,12 @@ const jwt = require('../../lib/token')
 
 
 exports.writeReview = async (req, res) => {
+  console.log('write review access')
+  const pool = await mysql(dbpool)
   try {
     const { body, file } = req
     const { exId, reviewContent, reviewGrade, reviewWatchDate } = body
     const { user_token } = req.headers
-
-    pool = await mysql(dbpool)
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
 
     const queryResult = await reviewModel.writeReview(body, file, tokenInfo.userID, pool)
@@ -29,9 +29,9 @@ exports.writeReview = async (req, res) => {
 }
 
 exports.getReview = async (req, res) => {
+  const pool = await mysql(dbpool)
   try {
     const { query } = req
-    pool = await mysql(dbpool)
     queryResult = await reviewModel.getReview(query, pool)
   } catch (e) {
     pool.release()
@@ -54,13 +54,13 @@ exports.getReview = async (req, res) => {
 }
 
 exports.updateReivew = async (req, res) => {
+  const pool = await mysql(dbpool)
   try {
     const { body, file } = req
     const { reviewId, exId, reviewContent, reviewGrade, reviewWatchDate } = body
     const { user_token } = req.headers
 
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
-    pool = await mysql(dbpool)
     const queryResult = await reviewModel.updateReview(body, file, tokenInfo.userID, pool)
     const totalCount = await count.getcount(exId, pool)
     const average = await exhibition.getExScore(exId, pool)
@@ -77,9 +77,9 @@ exports.updateReivew = async (req, res) => {
 exports.deleteReview = async (req, res) => {
   const { reviewId } = req.query
   const { user_token } = req.headers
+  const pool = await mysql(dbpool)
   try {
     const tokenInfo = await jwt.decodedToken(user_token, req.app.get('jwt-secret'))
-    pool = await mysql(dbpool)
     queryResult = await reviewModel.deleteReview(reviewId, tokenInfo.userID, pool)
   } catch (e) {
     pool.release()

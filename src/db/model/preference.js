@@ -1,17 +1,17 @@
 
-exports.insertPreference = function (prePlace, preMood, preGenre, preSubject, userId, connection) {
-  //preference.js 
-  return new Promise((resolve, reject) => {
-    const Query = 'INSERT INTO PREFERENCE VALUES (?, ?, ?, ?, ?)'
-    connection.query(Query, [userId, prePlace, preMood, preGenre, preSubject], (err, data) => {
-      if (err) {
-        reject('Preference add ERROR')
-      } else {
-        resolve(true)
-      }
-    })
-  })
-}
+// exports.insertPreference = function (prePlace, preMood, preGenre, preSubject, userId, connection) {
+//   //preference.js 
+//   return new Promise((resolve, reject) => {
+//     const Query = 'UPDATE PREFERENCE SET pre_place = ?, pre_mood = ?, pre_genre = ?, pre_subject = ? where user_id = ?'
+//     connection.query(Query, [userId, prePlace, preMood, preGenre, preSubject], (err, data) => {
+//       if (err) {
+//         reject('Preference add ERROR')
+//       } else {
+//         resolve(true)
+//       }
+//     })
+//   })
+// }
 exports.getPreferenceInfo = function (userId, connection) {
   //preference.js
 return new Promise((resolve, reject) => {

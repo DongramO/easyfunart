@@ -9,8 +9,8 @@ exports.logout = async (req, res) => {
     let { user_token } = req.headers
     const userInfo = await token.decodedToken(user_token,req.app.get('jwt-secret') )
     const userId = userInfo.userID
+    const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
     tokenDelete = await userData.deleteToken(userId,pool)
   } catch (e) {
     pool.release()

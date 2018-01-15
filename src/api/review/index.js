@@ -41,6 +41,7 @@ router.put('/', upload.single('image'), async function(req, res) {
 })
 
 router.post('/', upload.single('image'), async function(req, res) {
+  console.log(req.body)
   try {
       const t = await reviewCtrl.writeReview(req, res)
   } catch(e) {

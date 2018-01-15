@@ -8,13 +8,14 @@ exports.addUserInfo = async (req,res) => {
   let userDataResult, updateToken, insertPreUserId
   const { body } = req
   const { user_token } = req.headers
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     let userId = userInfo.userID
     userDataResult = await userData.updateUserInfo(userInfo, body, pool)
     updateToken = await tokenData.generateToken(req.app.get('jwt-secret'), userId, 20)
   } catch (e) {
+	console.log(e)
     pool.release()
     res.status(500).send({
       status: 'fail',
@@ -23,6 +24,7 @@ exports.addUserInfo = async (req,res) => {
     })
     return
   }
+	console.log('tt')
   pool.release()
   res.status(200).send({
     status: 'success',

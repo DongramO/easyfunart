@@ -10,8 +10,9 @@ exports.mainData = async (req, res) => {
   const { query } = req
   const { user_token } = req.headers
   let userInfo
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
+    
     const numSet = [];
     let cnt = 0;
     userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
@@ -116,18 +117,21 @@ exports.mainData = async (req, res) => {
     data: {
       topData,
       bottomResult,
-    },
+    }
   })
 }
 
 exports.serialNum = async (req, res) => {
   const { serial_num } = req.query
   console.log(serial_num)
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
+    
     serialData = await homeList.serialData(serial_num, pool)
-    serialData.ex_start_date =moment().format('YYYY-MM-DD')
-    serialData.ex_end_date =moment().format('YYYY-MM-DD')
+    if(serialData) {
+      serialData.ex_start_date =moment().format('YYYY-MM-DD')
+      serialData.ex_end_date =moment().format('YYYY-MM-DD')
+    }
   } catch (e) {
     console.log(e)
     pool.release()
@@ -136,6 +140,7 @@ exports.serialNum = async (req, res) => {
       code: 2002,
       message: e,
     })
+    return
   }
   pool.release()
   res.status(200).send({
@@ -143,8 +148,8 @@ exports.serialNum = async (req, res) => {
     code: 2000,
     message: 'success serial retrieve',
     data: {
-      serialData,
-    },
+      serialData : serialData
+    }
   })
 }
 exports.callGrade = async (req, res) => {
@@ -153,8 +158,9 @@ exports.callGrade = async (req, res) => {
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
   const { exId } = req.query
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
+    
     gradecallResult = await gradeData.callGradeInfo(exId, userId, pool)
   }
   catch (e) {
@@ -164,6 +170,7 @@ exports.callGrade = async (req, res) => {
       code: 4003,
       message: e
     })
+    return
   }
   res.status(200).send({
     status : 'success',
@@ -183,8 +190,9 @@ exports.scoreGrade = async (req, res) => {
   const userId = userInfo.userID
   const { exId } = req.query
   const { reviewGrade } = req.body
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool) // dbpool에 주어진 DB정보를 가지고 connection한 결과값을 resultㅇ ㅔ
+    
     gradeSearchResult = await gradeData.getGrade(exId, userId, pool)
     if (gradeSearchResult.length === 0) {
       gradeResult = await gradeData.insertGrade(exId, userId, reviewGrade, pool)
@@ -198,6 +206,7 @@ exports.scoreGrade = async (req, res) => {
       code: 4001,
       message: e
     })
+    return
   }
   pool.release()
   res.status(200).send({
@@ -213,7 +222,7 @@ exports.like = async (req, res) => {
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
   const { exId } = req.query
-  pool = await mysql(dbpool)
+  const pool = await mysql(dbpool)
   try {
     likeSearchResult = await likeData.searchLike(exId, userId, pool)
     if (likeSearchResult[0].CLike === 1) {
@@ -228,6 +237,7 @@ exports.like = async (req, res) => {
       code: 4002,
       message: e,
     })
+    return
   }
   pool.release()
   res.status(200).send({

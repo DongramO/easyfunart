@@ -18,8 +18,10 @@ exports.getMypageInfo = async (req, res) => {
   const { user_token } = req.headers
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
+  const pool = await mysql(dbpool)
+  
   try {
-    pool = await mysql(dbpool)
+    
     allResult = await mypageData.getinfo(userId, pool)
     likeCountResult = await likeData.getLikeCount(userId, pool)
     gradeCountResult = await gradeData.getGradeCount(userId, pool)
@@ -54,6 +56,7 @@ exports.getMypageInfo = async (req, res) => {
       code: 1001,
       message: e,
     })
+    return
   }
   pool.release()
   res.status(200).send({
@@ -80,13 +83,12 @@ exports.getMypageInfo = async (req, res) => {
 
 exports.myPreferenceModify = async (req, res) => {
   let preferenceModifyResult, userPreferenceModifyResult
+  const pool = await mysql(dbpool)
   try {
     const { preSex, preAge, prePlace, preMood, preGenre, preSubject  } = req.body
     const { user_token } = req.headers
     const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     const userId = userInfo.userID
-
-    pool = await mysql(dbpool)
 
     let place_hashtag = prePlace.split(",")
     let mood_hashtag = preMood.split(",")
@@ -140,10 +142,10 @@ exports.myPreferenceModify = async (req, res) => {
 }
 
 exports.profileModify = async (req, res) => {
+  const pool = await mysql(dbpool)
   try {
     const { file } = req
     const { user_token } = req.headers
-    pool = await mysql(dbpool)
     const tokenInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
     const userId = tokenInfo.userID
     const profileUPdate = await userData.updateProfile(userId, file, pool)
@@ -160,8 +162,8 @@ exports.userNicknameModify = async (req, res) => {
   const userInfo = await tokenData.decodedToken(user_token, req.app.get('jwt-secret'))
   const userId = userInfo.userID
   const { userNickname } = req.body
+  const pool = await mysql(dbpool)
   try {
-    pool = await mysql(dbpool)
     nicknameModifyResult = await userData.modifyNicknameInfo(userNickname, userId, pool)
   } catch (e) {
     pool.release()
